@@ -1,9 +1,9 @@
-<!-- ![ID-CompressAI-logo](assets/ID-compressAI-logo-750x140.svg =750x140) -->
-<a href="url"><img src="docs/source/_static/logo.svg" align="center"></a>
+<!-- ![ID-CompressAI-logo](assets/CRA5LOGO.svg =750x140) -->
+<a href="url"><img src="assets/CRA5LOGO.svg" align="center"></a>
 
 [![License](https://img.shields.io/github/license/InterDigitalInc/CompressAI?color=blue)](https://github.com/InterDigitalInc/CompressAI/blob/master/LICENSE)
 [![PyPI](https://img.shields.io/pypi/v/compressai?color=brightgreen)](https://pypi.org/project/compressai/)
-[![Downloads](https://pepy.tech/badge/compressai)](https://pypi.org/project/compressai/#files)
+[![Downloads](https://pepy.tech/badge/cra5)](https://pypi.org/project/cra5/#files)
 
 CompressAI (_compress-ay_) is a PyTorch library and evaluation platform for
 end-to-end compression research.
