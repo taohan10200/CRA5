@@ -5,7 +5,7 @@
 [![PyPI](https://img.shields.io/pypi/v/cra5?color=brightgreen)](https://pypi.org/project/compressai/)
 [![Downloads](https://pepy.tech/badge/cra5)](https://pypi.org/project/cra5/#files)
 
-CRA5 is a extreme compressed version of the most popular weather dataset ERA5. The reposity also includes compression models, forecasting model for research to cunduct por table weather and climate research.
+CRA5 is a extreme **compressed dataset** of the most popular weather dataset ERA5. The repository also includes **compression models**, **forecasting model** for research to conduct portable weather and climate research.
 
 CompressAI currently provides:
 
