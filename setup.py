@@ -38,7 +38,7 @@ from setuptools import find_packages, setup
 cwd = Path(__file__).resolve().parent
 
 package_name = "cra5"
-version = "0.0.1.dev0"
+version = "0.0.2.dev1"
 git_hash = "unknown"
 
 
@@ -127,10 +127,10 @@ def get_extra_requirements():
 setup(
     name=package_name,
     version=version,
-    description="A PyTorch library and evaluation platform for end-to-end compression research",
-    url="https://github.com/InterDigitalInc/CompressAI",
-    author="InterDigital AI Lab",
-    author_email="compressai@interdigital.com",
+    description="A large compression model for weather and climate data, which compresses a 200+ TB ERA5 dataset into a new 0.7TB CRA5 dataset.",
+    url="https://github.com/taohan10200/CRA5",
+    author="HAN Tao",
+    author_email="hantao10200@gmail.com",
     packages=find_packages(exclude=("tests",)),
     zip_safe=False,
     python_requires=">=3.8",

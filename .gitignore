@@ -24,8 +24,7 @@ share/python-wheels/
 .installed.cfg
 *.egg
 MANIFEST
-cra5/_CXX.cpython-310-x86_64-linux-gnu.so
-cra5/ans.cpython-310-x86_64-linux-gnu.so
+cra5/*.so
 
 # big data
 data/

@@ -2,19 +2,19 @@
 <a href="url"><img src="assets/CRA5LOGO.svg" align="center"></a>
 
 [![License](https://img.shields.io/github/license/InterDigitalInc/CompressAI?color=blue)](https://github.com/InterDigitalInc/CompressAI/blob/master/LICENSE)
-[![PyPI](https://img.shields.io/pypi/v/compressai?color=brightgreen)](https://pypi.org/project/compressai/)
+[![PyPI](https://img.shields.io/pypi/v/cra5?color=brightgreen)](https://pypi.org/project/compressai/)
 [![Downloads](https://pepy.tech/badge/cra5)](https://pypi.org/project/cra5/#files)
 
-CompressAI (_compress-ay_) is a PyTorch library and evaluation platform for
-end-to-end compression research.
+CRA5 is a extreme compressed version of the most popular weather dataset ERA5. The reposity also includes compression models, forecasting model for research to cunduct por table weather and climate research.
 
 CompressAI currently provides:
 
-* custom operations, layers and models for deep learning based data compression
-* a partial port of the official [TensorFlow compression](https://github.com/tensorflow/compression) library
-* pre-trained end-to-end compression models for learned image compression
-* evaluation scripts to compare learned models against classical image/video
-  compression codecs
+* A customized variaitional transformer (VAEformer) for climate data compression
+* a partial port of the official [CompressAI](https://github.com/InterDigitalInc/CompressAI) library
+* pre-trained end-to-end compression models for learned climate/weather data compression
+
+Advantage of VAEformer: 
+* A state of art learing-based compression method compare learned models against classical image/video compression codecs
 
 ![PSNR performances plot on Kodak](assets/kodak-psnr.png)
 
@@ -28,7 +28,7 @@ CompressAI supports python 3.8+ and PyTorch 1.7+.
 **pip**:
 
 ```bash
-pip install compressai
+pip install cra5
 ```
 
 > **Note**: wheels are available for Linux and MacOS.
@@ -42,7 +42,7 @@ To get started locally and install the development version of CompressAI, run
 the following commands in a [virtual environment](https://docs.python.org/3.6/library/venv.html):
 
 ```bash
-git clone https://github.com/InterDigitalInc/CompressAI compressai
+git clone https://github.com/InterDigitalInc/Comp compressai
 cd compressai
 pip install -U pip && pip install -e .
 ```
