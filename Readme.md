@@ -142,14 +142,14 @@ cra5_API = cra5_api()
 # and then compress it into a tiny binary file `./data/cra5/2024/2024-06-01T00:00:00.bin` (**1.8Mib**)
 cra5_API.encoder_era5(time_stamp="2024-06-01T00:00:00") 
 
-# If you aready have the compressed binary file,  this command will help you get the reconstructed weather data.
+# If you aready have the compressed binary file,  this command will help you get the latent of the weather data.
 latent = cra5_API.decode_from_bin("2024-06-01T00:00:00", return_format='latent')
 
 # show some variables for the constructed data
 cra5_API.show_latent(
 	latent=latent.squeeze(0).cpu().numpy(), 
 	time_stamp="2024-06-01T00:00:00", 
-	show_channels=[0, 10, 20, 30, 40, 50, 60, 70, 80, 90, 100, 110])
+	show_channels=[0, 10, 20, 30, 40, 50, 60, 70, 80, 90, 100, 110, 120, 130, 140, 150])
 
 ```
 <!-- ![ID-CompressAI-logo](assets/2024-06-01T00:00:00_latent.png =400x140) -->
