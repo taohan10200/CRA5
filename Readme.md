@@ -39,7 +39,7 @@ pip install cra5
 A C++17 compiler, a recent version of pip (19.0+), and common python packages
 are also required (see `setup.py` for the full list).
 
-To get started locally and install the development version of CompressAI, run
+To get started locally and install the development version of CRA5, run
 the following commands in a [virtual environment](https://docs.python.org/3.6/library/venv.html):
 
 ```bash
