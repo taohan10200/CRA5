@@ -5,6 +5,7 @@
 [![License](https://img.shields.io/github/license/InterDigitalInc/CompressAI?color=blue)](https://github.com/InterDigitalInc/CompressAI/blob/master/LICENSE)
 [![PyPI](https://img.shields.io/pypi/v/cra5?color=brightgreen)](https://pypi.org/project/compressai/)
 [![Downloads](https://pepy.tech/badge/cra5)](https://pypi.org/project/cra5/#files)
+
 [Paper:CRA5: Extreme Compression of ERA5 for Portable Global Climate and Weather Research via an Efficient Variational Transformer](https://arxiv.org/abs/2405.03376)
 
 # Introduction and get started
