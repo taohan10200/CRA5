@@ -127,7 +127,7 @@ cra5_API.show_image(
 
 
 
-## 3 VAEformer is based on the Auto-Encoder-Decoder, we provide a pretraiedn VAE for the weather research, you can use our VAEformer to get the latents for downstream research, like diffusion-based or other generation-based forecasting methods.
+## 3 VAEformer is based on the Auto-Encoder-Decoder, we provide a pretrained VAE for the weather research, you can use our VAEformer to get the latents for downstream research, like diffusion-based or other generation-based forecasting methods.
 
 * **Using it as a Auto-Encoder-Decoder**
 
@@ -204,7 +204,7 @@ To plot results from bench/eval_model simulations (requires matplotlib by defaul
 python3 -m compressai.utils.plot --help
 ```
 
-To evaluate traditional codecs:
+<!-- To evaluate traditional codecs:
 
 ```bash
 python3 -m compressai.utils.bench --help
@@ -220,9 +220,9 @@ python3 -m compressai.utils.video.eval_model pretrained /path/to/video/folder/ -
 python3 -m compressai.utils.video.bench x265 --help
 python3 -m compressai.utils.video.bench VTM --help
 python3 -m compressai.utils.video.plot --help
-```
+``` -->
 
-## Tests
+<!-- ## Tests
 
 Run tests with `pytest`:
 
@@ -230,7 +230,7 @@ Run tests with `pytest`:
 pytest -sx --cov=compressai --cov-append --cov-report term-missing tests
 ```
 
-Slow tests can be skipped with the `-m "not slow"` option.
+Slow tests can be skipped with the `-m "not slow"` option. -->
 
 
 ## License
@@ -246,12 +246,12 @@ Before contributing, please read the CONTRIBUTING.md file.
 
 ## Authors
 
-* Jean Bégaint, Fabien Racapé, Simon Feltman and Hyomin Choi, InterDigital AI Lab.
+* Tao Han ([hantao10200@gmail.com](mailto:hantao10200@gmail.com)) 
+* Zhenghao Chen.
 
 ## Citation
 
-If you use this project, please cite the relevant original publications for the
-models and datasets, and cite this project as:
+If you use this project, please cite the relevant original publications for the models and datasets, and cite this project as:
 
 ```
 @article{han2024cra5extremecompressionera5,
