@@ -18,17 +18,13 @@ CompressAI currently provides:
 * a partial port of the official [CompressAI](https://github.com/InterDigitalInc/CompressAI) library
 * pre-trained end-to-end compression models for learned climate/weather data compression
 
-Advantage of VAEformer: 
-* A state of art learing-based compression method compare learned models against classical image/video compression codecs
-
-![PSNR performances plot on Kodak](assets/kodak-psnr.png)
 
 
 > **Note**: Multi-GPU support is now experimental.
 
 ## Installation
 
-CompressAI supports python 3.8+ and PyTorch 1.7+.
+CRA5 supports python 3.8+ and PyTorch 1.7+.
 
 **pip**:
 
