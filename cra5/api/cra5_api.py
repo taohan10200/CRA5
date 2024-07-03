@@ -89,7 +89,8 @@ class cra5_api():
     def decode_from_bin(self, 
                         time_stamp, 
                         return_format='de_normlized',
-                        show_variables = []):
+                        ):
+
         bin_path = f'{self.local_root}/cra5/{time_stamp[:4]}/{time_stamp}.bin'
         dec_start = time.time()
         with Path(bin_path).open("rb") as f:
@@ -101,9 +102,15 @@ class cra5_api():
             for _ in range(n_strings):
                 s = read_bytes(f, read_uints(f, 1)[0])
                 lstrings.append([s])
+                
             with torch.no_grad():    
                 print(f"Decoded in {time.time() - dec_start:.2f}s")
-                output =  self.net.decompress(lstrings, shape)
+                if return_format=='latent':
+                    output =  self.net.decompress(lstrings, shape, return_format='latent')
+                    return output
+                else:
+                    output =  self.net.decompress(lstrings, shape)
+                
             if return_format =='normlized':
                 return output['x_hat']
            
@@ -111,11 +118,8 @@ class cra5_api():
                 x_hat = self.de_normalization(output['x_hat'].squeeze(0))
                 print(f"Decoded in {time.time() - dec_start:.2f}s")
                                     
-                if len(show_variables)>0:
-                    # For video, only the last frame is shown
-                    self.show_image(x_hat.cpu().numpy(), time_stamp, show_variables)
                 return x_hat
-
+    
             
     def read_data_from_grib(self,
                             time_stamp:str, 
@@ -231,6 +235,30 @@ class cra5_api():
 
         plt.show()
         fig_path = f'{self.local_root}/cra5_vis/{time_stamp[:4]}/{time_stamp}.png'
+        os.makedirs(os.path.dirname(fig_path), exist_ok=True)
+        if save_images:
+            plt.savefig(fig_path)
+            
+    def show_latent(self,
+                   latent,  
+                   time_stamp,                           
+                   show_channels:list=[0, 10, 20, 30, 40, 50, 60, 70, 80],
+                   save_images=True,
+                    ):
+        input_data = self.read_data_from_grib(time_stamp)
+
+
+        fig, axs = plt.subplots(len(show_channels)//4, 4, figsize=( 24, 3*len(show_channels)//4))
+        axs = axs.flatten()
+        for i, cha_id in enumerate(show_channels):
+            # original data
+            im0 = axs[i].imshow(latent[cha_id], cmap='jet')
+            axs[i].set_title(f'Channel_{cha_id}')
+            fig.colorbar(im0, ax=axs[i])
+        
+        plt.tight_layout()
+        plt.show()
+        fig_path = f'{self.local_root}/cra5_vis/{time_stamp[:4]}/{time_stamp}_latent.png'
         os.makedirs(os.path.dirname(fig_path), exist_ok=True)
         if save_images:
             plt.savefig(fig_path)

@@ -67,25 +67,23 @@ officially supported.
 
 # Usages
 
-## 1. VAEformer is a powerful compression model, we hope it can be extended to other domains, like image and video compression.
+## 1. CRA5 dataset is a outcome of the VAEformer in the atmospheric science. We explore this to facilitate the research in weather and climate. 
+
+* **Train the large data-driven numerical weather forecasting models with coppressed ERA5 dataset**
+For researches who do not have enough disk space to store the 200TiB+ ERA5 dataset, but have interests to to train a large weather forecasting model, like [FengWu-GHR](https://arxiv.org/abs/2402.00059),  this research can help you save it into less than 1 TiB disk.  
+
+Our preliminary attemp have proven that the CRA5 dataset can train the very very similar NWP model compared with the original ERA5 dataset. Also, with this dataset, you can easily train a Nature published forecasting model, like [Pangu-Weather](https://www.nature.com/articles/s41586-023-06185-3). 
+
+<!-- ![ID-CompressAI-logo](assets/rmse_acc_bias_activity.png =400x140) -->
+<a href="url"><img src="assets/rmse_acc_bias_activity.png" align="center"></a>
+
+## 2. VAEformer is a powerful compression model, we hope it can be extended to other domains, like image and video compression.
 
 <!-- ![ID-CompressAI-logo](assets/MSE_supp_new.png =400x140) -->
 <a href="url"><img src="assets/MSE_supp_new.png" align="center"></a>
 
 
-## 2. CRA5 dataset is a outcome of the VAEformer in the atmospheric science. We explore this to facilitate the research in weather and climate. 
-### How to use it for weather data compression and decompression?
-
-* **Train the large data-driven numerical weather forecasting models with coppressed ERA5 dataset**
-For researches who do not have enough disk space to store the 200TiB+ ERA5 dataset, but have interests to to train a large weather forecasting model, like [FengWu-GHR](https://arxiv.org/abs/2402.00059),  this research can help you save it into less than 1 TiB disk.  
-
-Our preliminary attemp have proven that the CRA5 dataset can train the very very similar NWP model compared with the original ERA5 dataset. Also, with this dataset, you can easily train a nature published forecasting model, like [Pangu-Weather](https://www.nature.com/articles/s41586-023-06185-3). 
-
-<!-- ![ID-CompressAI-logo](assets/rmse_acc_bias_activity.png =400x140) -->
-<a href="url"><img src="assets/rmse_acc_bias_activity.png" align="center"></a>
-
-* **Using it as a Auto-Encoder-Decoder**
- For people who are intersting in diffusion-based or other generation-based forecasting methods, we can provide a Auto Encoder and decoder for the weather research, you can use our VAEformer to get the latents for downstream research.
+*  **We here demonstrate how to use it for weather data compression and decompression**
 
 
 ```python
@@ -126,6 +124,37 @@ cra5_API.show_image(
 ```
 <!-- ![ID-CompressAI-logo](assets/CRA5LOGO.svg =400x140) -->
 <a href="url"><img src="assets/2024-06-01T00:00:00.png" align="center"></a>
+
+
+
+## 3 VAEformer is based on the Auto-Encoder-Decoder, we provide a pretraiedn VAE for the weather research, you can use our VAEformer to get the latents for downstream research, like diffusion-based or other generation-based forecasting methods.
+
+* **Using it as a Auto-Encoder-Decoder**
+
+For people who are intersting in diffusion-based or other generation-based forecasting methods, we can provide a Auto Encoder and decoder for the weather research, you can use our VAEformer to get the latents for downstream research.
+
+
+```python
+from cra5.api import cra5_api
+cra5_API = cra5_api()
+# This command will download two ERA5 netcdf files 
+# data/ERA5/2024/2024-06-01T00:00:00_pressure.nc (513MiB) and data/ERA5/2024/2024-06-01T00:00:00_single.nc (18MiB) 
+# and then compress it into a tiny binary file `./data/cra5/2024/2024-06-01T00:00:00.bin` (**1.8Mib**)
+cra5_API.encoder_era5(time_stamp="2024-06-01T00:00:00") 
+
+# If you aready have the compressed binary file,  this command will help you get the reconstructed weather data.
+latent = cra5_API.decode_from_bin("2024-06-01T00:00:00", return_format='latent')
+
+# show some variables for the constructed data
+cra5_API.show_latent(
+	latent=latent.squeeze(0).cpu().numpy(), 
+	time_stamp="2024-06-01T00:00:00", 
+	show_channels=[0, 10, 20, 30, 40, 50, 60, 70, 80, 90, 100, 110])
+
+```
+<!-- ![ID-CompressAI-logo](assets/2024-06-01T00:00:00_latent.png =400x140) -->
+<a href="url"><img src="assets/2024-06-01T00:00:00_latent.png" align="center"></a>
+
 
 Script and notebook examples can be found in the `examples/` directory.
 

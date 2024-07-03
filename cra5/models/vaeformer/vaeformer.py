@@ -341,7 +341,9 @@ class VAEformer(CompressionModel):
             "posterior": posterior
         }
 
-    def compress(self, x):
+    def compress(self, 
+                 x,
+             ):
         moments = self.g_a(x)
         if self.lower_dim:
             moments = self.quant_conv(moments)
@@ -383,7 +385,10 @@ class VAEformer(CompressionModel):
 
         return {"strings": [y_strings, z_strings], "z_shape": z.size()[-2:]}
 
-    def decompress(self, strings, shape):
+    def decompress(self, 
+                   strings, 
+                   shape,
+                   return_format: str='reconstructed'):
         assert isinstance(strings, list) and len(strings) == 2
         z_hat = self.entropy_bottleneck.decompress(strings[1], shape)
         gaussian_params = self.h_s(z_hat)
@@ -395,6 +400,10 @@ class VAEformer(CompressionModel):
         
         if self.lower_dim:
             y_hat = self.post_quant_conv(y_hat)
+            
+        if return_format=='latent':
+            return y_hat
+        
         x_hat = self.g_s(y_hat) #.clamp_(0, 1)
 
         return {"x_hat": x_hat}
