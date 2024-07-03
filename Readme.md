@@ -68,6 +68,7 @@ officially supported.
 ## 1. CRA5 dataset is a outcome of the VAEformer in the atmospheric science. We explore this to facilitate the research in weather and climate. 
 
 * **Train the large data-driven numerical weather forecasting models with coppressed ERA5 dataset**
+
 For researches who do not have enough disk space to store the 200TiB+ ERA5 dataset, but have interests to to train a large weather forecasting model, like [FengWu-GHR](https://arxiv.org/abs/2402.00059),  this research can help you save it into less than 1 TiB disk.  
 
 Our preliminary attemp have proven that the CRA5 dataset can train the very very similar NWP model compared with the original ERA5 dataset. Also, with this dataset, you can easily train a Nature published forecasting model, like [Pangu-Weather](https://www.nature.com/articles/s41586-023-06185-3). 
