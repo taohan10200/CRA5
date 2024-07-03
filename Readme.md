@@ -1,3 +1,4 @@
+
 <!-- ![ID-CompressAI-logo](assets/CRA5LOGO.svg =750x140) -->
 <a href="url"><img src="assets/CRA5LOGO.svg" align="center"></a>
 
@@ -5,7 +6,9 @@
 [![PyPI](https://img.shields.io/pypi/v/cra5?color=brightgreen)](https://pypi.org/project/compressai/)
 [![Downloads](https://pepy.tech/badge/cra5)](https://pypi.org/project/cra5/#files)
 
-CRA5 is a extreme **compressed dataset** of the most popular weather dataset ERA5. The repository also includes **compression models**, **forecasting model** for research to conduct portable weather and climate research.
+# Introduction and get started
+
+CRA5 is a extreme **compressed dataset** of the most popular weather dataset ERA5. The repository also includes **compression models**, **forecasting model** for researchers to conduct portable weather and climate research.
 
 CompressAI currently provides:
 
@@ -42,8 +45,8 @@ To get started locally and install the development version of CompressAI, run
 the following commands in a [virtual environment](https://docs.python.org/3.6/library/venv.html):
 
 ```bash
-git clone https://github.com/InterDigitalInc/Comp compressai
-cd compressai
+git https://github.com/taohan10200/CRA5
+cd CRA5
 pip install -U pip && pip install -e .
 ```
 
@@ -55,16 +58,74 @@ For a custom installation, you can also run one of the following commands:
 > **Note**: Docker images will be released in the future. Conda environments are not
 officially supported.
 
-## Documentation
+<!-- ## Documentation -->
 
-* [Installation](https://interdigitalinc.github.io/CompressAI/installation.html)
+<!-- * [Installation](https://interdigitalinc.github.io/CompressAI/installation.html)
 * [CompressAI API](https://interdigitalinc.github.io/CompressAI/)
 * [Training your own model](https://interdigitalinc.github.io/CompressAI/tutorials/tutorial_train.html)
-* [List of available models (model zoo)](https://interdigitalinc.github.io/CompressAI/zoo.html)
+* [List of available models (model zoo)](https://interdigitalinc.github.io/CompressAI/zoo.html) -->
 
-## Usage
+# Usages
 
-### Examples
+## 1. VAEformer is a powerful compression model, we hope it can be extended to other domains, like image and video compression.
+
+<!-- ![ID-CompressAI-logo](assets/MSE_supp_new.png =400x140) -->
+<a href="url"><img src="assets/MSE_supp_new.png" align="center"></a>
+
+
+## 2. CRA5 dataset is a outcome of the VAEformer in the atmospheric science. We explore this to facilitate the research in weather and climate. 
+### How to use it for weather data compression and decompression?
+
+* **Train the large data-driven numerical weather forecasting models with coppressed ERA5 dataset**
+For researches who do not have enough disk space to store the 200TiB+ ERA5 dataset, but have interests to to train a large weather forecasting model, like [FengWu-GHR](https://arxiv.org/abs/2402.00059),  this research can help you save it into less than 1 TiB disk.  
+
+Our preliminary attemp have proven that the CRA5 dataset can train the very very similar NWP model compared with the original ERA5 dataset. Also, with this dataset, you can easily train a nature published forecasting model, like [Pangu-Weather](https://www.nature.com/articles/s41586-023-06185-3). 
+
+<!-- ![ID-CompressAI-logo](assets/rmse_acc_bias_activity.png =400x140) -->
+<a href="url"><img src="assets/rmse_acc_bias_activity.png" align="center"></a>
+
+* **Using it as a Auto-Encoder-Decoder**
+ For people who are intersting in diffusion-based or other generation-based forecasting methods, we can provide a Auto Encoder and decoder for the weather research, you can use our VAEformer to get the latents for downstream research.
+
+
+```python
+import os 
+import torch
+from cra5.models.compressai.zoo import vaeformer_pretrained
+device = 'cuda' if torch.cuda.is_available() else 'cpu'
+print(device)
+net = vaeformer_pretrained(quality=268, pretrained=True).eval().to(device)
+input_data_norm = torch.rand(1,268, 721,1440) #This is a proxy weather data. It actually should be a 
+x = torch.from_numpy(input_data_norm).unsqueeze(0).to(device)
+print(x.shape)
+with torch.no_grad():
+    out_net = net.compress(x) 
+    
+print(out_net)
+```
+or directly using our API
+
+
+```python
+from cra5.api import cra5_api
+cra5_API = cra5_api()
+# This command will download two ERA5 netcdf files 
+# data/ERA5/2024/2024-06-01T00:00:00_pressure.nc (513MiB) and data/ERA5/2024/2024-06-01T00:00:00_single.nc (18MiB) 
+# and then compress it into a tiny binary file `./data/cra5/2024/2024-06-01T00:00:00.bin` (**1.8Mib**)
+cra5_API.encoder_era5(time_stamp="2024-06-01T00:00:00") 
+
+# If you aready have the compressed binary file,  this command will help you get the reconstructed weather data.
+cra5_data = cra5_API.decode_from_bin(time_stamp="2024-06-01T00:00:00")
+
+# show some variables for the constructed data
+cra5_API.show_image(
+	reconstruct_data=cra5_data.cpu().numpy(), 
+	time_stamp="2024-06-01T00:00:00", 
+	show_variables=['z_500', 'q_500', 'u_500', 'v_500', 't_500', 'w_500'])
+
+```
+<!-- ![ID-CompressAI-logo](assets/CRA5LOGO.svg =400x140) -->
+<a href="url"><img src="assets/2024-06-01T00:00:00.png" align="center"></a>
 
 Script and notebook examples can be found in the `examples/` directory.
 
@@ -164,22 +225,26 @@ If you use this project, please cite the relevant original publications for the
 models and datasets, and cite this project as:
 
 ```
-@article{begaint2020compressai,
-	title={CompressAI: a PyTorch library and evaluation platform for end-to-end compression research},
-	author={B{\'e}gaint, Jean and Racap{\'e}, Fabien and Feltman, Simon and Pushparaja, Akshay},
-	year={2020},
-	journal={arXiv preprint arXiv:2011.03029},
+@article{han2024cra5extremecompressionera5,
+      title={CRA5: Extreme Compression of ERA5 for Portable Global Climate and Weather Research via an Efficient Variational Transformer}, 
+      author={Tao Han and Zhenghao Chen and Song Guo and Wanghan Xu and Lei Bai},
+      year={2024},
+      eprint={2405.03376},
+      archivePrefix={arXiv},
+      primaryClass={cs.LG},
+      url={https://arxiv.org/abs/2405.03376}, 
 }
 ```
 
-For any work related to the variable bitrate models, please cite
+For any work related to the forecasting models, please cite
 ```
-@article{kamisli2024dcc_vbrlic,
-	title={Variable-Rate Learned Image Compression with Multi-Objective Optimization and Quantization-Reconstruction Offsets},
-	author={Kamisli, Fatih and Racap{\'e}, Fabien and Choi, Hyomin},
-	year={2024},
-	booktitle={2024 Data Compression Conference (DCC)},
-	eprint={2402.18930},
+@article{han2024fengwughr,
+title={FengWu-GHR: Learning the Kilometer-scale Medium-range Global Weather Forecasting}, 
+author={Tao Han and Song Guo and Fenghua Ling and Kang Chen and Junchao Gong and Jingjia Luo and Junxia Gu and Kan Dai and Wanli Ouyang and Lei Bai},
+year={2024},
+eprint={2402.00059},
+archivePrefix={arXiv},
+primaryClass={cs.LG}
 }
 ```
 

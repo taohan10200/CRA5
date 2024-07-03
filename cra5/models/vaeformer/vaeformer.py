@@ -272,9 +272,11 @@ class VAEformer(CompressionModel):
         return {
             **x_hat,
             "strings":out['strings'],
-            'shape':inputs.shape,
+            "z_shape":out['shape'],
+            'x_shape':inputs.shape,
             'encoding_time':(t2-t1)/inputs.size(0),
             'decoding_time':(t3-t2)/inputs.size(0)}
+
 
     def encode_latent(self, x, type='quantized'):
         moments = self.g_a(x)
@@ -379,7 +381,7 @@ class VAEformer(CompressionModel):
         # import pdb
         # pdb.set_trace()
 
-        return {"strings": [y_strings, z_strings], "shape": z.size()[-2:]}
+        return {"strings": [y_strings, z_strings], "z_shape": z.size()[-2:]}
 
     def decompress(self, strings, shape):
         assert isinstance(strings, list) and len(strings) == 2

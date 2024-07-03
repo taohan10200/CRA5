@@ -12,8 +12,18 @@ storage=dict(
 normalization = False
 isobaricInhPa = None
 
-pressure_var = ['z','q', 'u', 'v', 't', 'r','w']
-surface_var  = ['v10','u10','v100', 'u100', 't2m','tcc', 'sp','tp', 'msl']
+
+vnames=dict(
+    pressure=['z','q', 'u', 'v', 't', 'r','w'],
+    single=['v10','u10','v100', 'u100', 't2m','tcc', 'sp','tp', 'msl']) # 'tisr'
+
+
+# total_levels = [1000.,  975.,  950.,  925.,  900.,  875.,  850.,  825.,  800.,
+#  775.,  750.,  700.,  650.,  600.,  550.,  500.,  450.,  400.,
+#  350.,  300.,  250.,  225.,  200.,  175.,  150.,  125.,  100.,
+#  70.,   50.,   30.,   20.,   10.,    7.,    5.,    3.,    2.,
+#  1.]
+
 
 pressure_request_dic={'product_type': 'reanalysis',
               'variable': [

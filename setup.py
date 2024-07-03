@@ -38,7 +38,7 @@ from setuptools import find_packages, setup
 cwd = Path(__file__).resolve().parent
 
 package_name = "cra5"
-version = "0.0.2.dev1"
+version = "0.0.3.dev0"
 git_hash = "unknown"
 
 
@@ -58,7 +58,6 @@ def write_version_file():
 
 
 write_version_file()
-
 
 def get_extensions():
     ext_dirs = cwd / package_name / "cpp_exts"
@@ -111,7 +110,7 @@ POINTCLOUD_REQUIRES = [
     "pyntcloud-yoda",  # Patched version of pyntcloud.
 ]
 
-
+platforms = ['linux/Windows']
 def get_extra_requirements():
     extras_require = {
         "test": TEST_REQUIRES,
@@ -126,9 +125,11 @@ def get_extra_requirements():
 
 setup(
     name=package_name,
+    include_package_data=True,
     version=version,
     description="A large compression model for weather and climate data, which compresses a 200+ TB ERA5 dataset into a new 0.7TB CRA5 dataset.",
     url="https://github.com/taohan10200/CRA5",
+    py_modules=['cra5'],
     author="HAN Tao",
     author_email="hantao10200@gmail.com",
     packages=find_packages(exclude=("tests",)),

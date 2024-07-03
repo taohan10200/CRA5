@@ -1,0 +1,5 @@
+include LICENSE
+include requirements.txt
+recursive-include cra5 *
+recursive-include cra5 *.cpp *.hpp
+recursive-include third_party *.h
