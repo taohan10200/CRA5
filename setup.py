@@ -38,7 +38,7 @@ from setuptools import find_packages, setup
 cwd = Path(__file__).resolve().parent
 
 package_name = "cra5"
-version = "0.0.3.dev0"
+version = "0.0.3.dev1"
 git_hash = "unknown"
 
 

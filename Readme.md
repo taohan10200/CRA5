@@ -274,6 +274,90 @@ primaryClass={cs.LG}
 }
 ```
 
+## The weather variabls supported in CRA5 and their numerical error
+
+CRA5 contains a total of 268, variables, including 7 pressure-level variablse from the [ERA5 pressure level archive](https://cds.climate.copernicus.eu/cdsapp#!/dataset/reanalysis-era5-pressure-levels) and 9 [surface variables](https://cds.climate.copernicus.eu/cdsapp#!/dataset/reanalysis-era5-single-levels?tab=overview) . 
+
+| Variable | channel | error   | Variable | channel | error   | Variable | channel | error   |Variable | channel  | error   |Variable | channel  | error   |  
+|--------|---------|-----------|--------|---------|-----------|--------|---------|-----------|--------|---------|-----------|--------|---------|-----------|
+| geopotential  | z_1000  | 9.386     | specific_humidity  | q_1000  | 0.00033   | u_component_of_wind | u_1000  | 0.416     |v_component_of_wind  | v_1000  | 0.411     | temperature  | t_1000  | 0.405     |
+| geopotential  | z_975   | 7.857     | specific_humidity  | q_975   | 0.00032   | u_component_of_wind | u_975   | 0.448     |v_component_of_wind  | v_975   | 0.442     | temperature  | t_975   | 0.380     |
+| geopotential  | z_950   | 6.802     | specific_humidity  | q_950   | 0.00035   | u_component_of_wind | u_950   | 0.491     |v_component_of_wind  | v_950   | 0.479     | temperature  | t_950   | 0.352     |
+| geopotential  | z_925   | 6.088     | specific_humidity  | q_925   | 0.00037   | u_component_of_wind | u_925   | 0.520     |v_component_of_wind  | v_925   | 0.505     | temperature  | t_925   | 0.333     |
+| geopotential  | z_900   | 5.575     | specific_humidity  | q_900   | 0.00036   | u_component_of_wind | u_900   | 0.518     |v_component_of_wind  | v_900   | 0.503     | temperature  | t_900   | 0.321     |
+| geopotential  | z_875   | 5.259     | specific_humidity  | q_875   | 0.00035   | u_component_of_wind | u_875   | 0.517     |v_component_of_wind  | v_875   | 0.503     | temperature  | t_875   | 0.309     |
+| geopotential  | z_850   | 5.061     | specific_humidity  | q_850   | 0.00034   | u_component_of_wind | u_850   | 0.508     |v_component_of_wind  | v_850   | 0.493     | temperature  | t_850   | 0.294     |
+| geopotential  | z_825   | 4.941     | specific_humidity  | q_825   | 0.00031   | u_component_of_wind | u_825   | 0.496     |v_component_of_wind  | v_825   | 0.481     | temperature  | t_825   | 0.276     |
+| geopotential  | z_800   | 4.897     | specific_humidity  | q_800   | 0.00029   | u_component_of_wind | u_800   | 0.487     |v_component_of_wind  | v_800   | 0.472     | temperature  | t_800   | 0.259     |
+| geopotential  | z_775   | 4.947     | specific_humidity  | q_775   | 0.00027   | u_component_of_wind | u_775   | 0.486     |v_component_of_wind  | v_775   | 0.468     | temperature  | t_775   | 0.250     |
+| geopotential  | z_750   | 5.120     | specific_humidity  | q_750   | 0.00029   | u_component_of_wind | u_750   | 0.545     |v_component_of_wind  | v_750   | 0.524     | temperature  | t_750   | 0.250     |
+| geopotential  | z_700   | 5.593     | specific_humidity  | q_700   | 0.00029   | u_component_of_wind | u_700   | 0.638     |v_component_of_wind  | v_700   | 0.607     | temperature  | t_700   | 0.242     |
+| geopotential  | z_650   | 5.810     | specific_humidity  | q_650   | 0.00025   | u_component_of_wind | u_650   | 0.634     |v_component_of_wind  | v_650   | 0.610     | temperature  | t_700   | 0.242     |
+| geopotential  | z_600   | 5.882     | specific_humidity  | q_600   | 0.00020   | u_component_of_wind | u_600   | 0.633     |v_component_of_wind  | v_600   | 0.597     | temperature  | t_650   | 0.240     |
+| geopotential  | z_550   | 5.958     | specific_humidity  | q_550   | 0.00018   | u_component_of_wind | u_550   | 0.668     |v_component_of_wind  | v_550   | 0.616     | temperature  | t_600   | 0.222     |
+| geopotential  | z_500   | 6.098     | specific_humidity  | q_500   | 0.00014   | u_component_of_wind | u_500   | 0.676     |v_component_of_wind  | v_500   | 0.603     | temperature  | t_550   | 0.201     |
+| geopotential  | z_450   | 6.408     | specific_humidity  | q_450   | 0.00010   | u_component_of_wind | u_450   | 0.699     |v_component_of_wind  | v_450   | 0.649     | temperature  | t_500   | 0.185     |
+| geopotential  | z_400   | 6.851     | specific_humidity  | q_400   | 0.00007   | u_component_of_wind | u_400   | 0.733     |v_component_of_wind  | v_400   | 0.686     | temperature  | t_450   | 0.185     |
+| geopotential  | z_350   | 7.366     | specific_humidity  | q_350   | 0.00004   | u_component_of_wind | u_350   | 0.760     |v_component_of_wind  | v_350   | 0.704     | temperature  | t_400   | 0.179     |
+| geopotential  | z_300   | 8.324     | specific_humidity  | q_300   | 0.00002   | u_component_of_wind | u_300   | 0.744     |v_component_of_wind  | v_300   | 0.704     | temperature  | t_350   | 0.170     |
+| geopotential  | z_250   | 8.100     | specific_humidity  | q_250   | 0.00001   | u_component_of_wind | u_250   | 0.765     |v_component_of_wind  | v_250   | 0.701     | temperature  | t_300   | 0.160     |
+| geopotential  | z_225   | 7.698     | specific_humidity  | q_225   | 0.00001   | u_component_of_wind | u_225   | 0.722     |v_component_of_wind  | v_225   | 0.642     | temperature  | t_250   | 0.166     |
+| geopotential  | z_200   | 7.900     | specific_humidity  | q_200   | 0.00000   | u_component_of_wind | u_200   | 0.646     |v_component_of_wind  | v_200   | 0.563     | temperature  | t_225   | 0.169     |
+| geopotential  | z_175   | 8.059     | specific_humidity  | q_175   | 0.00000   | u_component_of_wind | u_175   | 0.565     |v_component_of_wind  | v_175   | 0.509     | temperature  | t_200   | 0.158     |
+| geopotential  | z_150   | 8.928     | specific_humidity  | q_150   | 0.00000   | u_component_of_wind | u_150   | 0.525     |v_component_of_wind  | v_150   | 0.458     | temperature  | t_150   | 0.149     |
+| geopotential  | z_125   | 10.813    | specific_humidity  | q_125   | 0.00000   | u_component_of_wind | u_125   | 0.479     |v_component_of_wind  | v_125   | 0.417     | temperature  | t_125   | 0.158     |
+| geopotential  | z_100   | 15.956    | specific_humidity  | q_100   | 0.00000   | u_component_of_wind | u_100   | 0.447     |v_component_of_wind  | v_100   | 0.373     | temperature  | t_100   | 0.178     |
+| geopotential  | z_70    | 11.158    | specific_humidity  | q_70    | 0.00000   | u_component_of_wind | u_70    | 0.360     |v_component_of_wind  | v_70    | 0.275     | temperature  | t_70    | 0.155     |
+| geopotential  | z_50    | 11.962    | specific_humidity  | q_50    | 0.00000   | u_component_of_wind | u_50    | 0.356     |v_component_of_wind  | v_50    | 0.242     | temperature  | t_50    | 0.158     |
+| geopotential  | z_30    | 13.317    | specific_humidity  | q_30    | 0.00000   | u_component_of_wind | u_30    | 0.348     |v_component_of_wind  | v_30    | 0.221     | temperature  | t_30    | 0.153     |
+| geopotential  | z_20    | 16.538    | specific_humidity  | q_20    | 0.00000   | u_component_of_wind | u_20    | 0.361     |v_component_of_wind  | v_20    | 0.229     | temperature  | t_20    | 0.161     |
+| geopotential  | z_10    | 19.751    | specific_humidity  | q_10    | 0.00000   | u_component_of_wind | u_10    | 0.350     |v_component_of_wind  | v_10    | 0.232     | temperature  | t_10    | 0.166     |
+| geopotential  | z_7     | 20.925    | specific_humidity  | q_7     | 0.00000   | u_component_of_wind | u_7     | 0.315     |v_component_of_wind  | v_7     | 0.225     | temperature  | t_7     | 0.161     |
+| geopotential  | z_5     | 20.825    | specific_humidity  | q_5     | 0.00000   | u_component_of_wind | u_5     | 0.307     |v_component_of_wind  | v_5     | 0.212     | temperature  | t_5     | 0.160     |
+| geopotential  | z_3     | 24.529    | specific_humidity  | q_3     | 0.00000   | u_component_of_wind | u_3     | 0.333     |v_component_of_wind  | v_3     | 0.246     | temperature  | t_3     | 0.194     |
+| geopotential  | z_2     | 28.055    | specific_humidity  | q_2     | 0.00000   | u_component_of_wind | u_2     | 0.338     |v_component_of_wind  | v_2     | 0.239     | temperature  | t_2     | 0.184     |
+| geopotential  | z_1     | 27.987    | specific_humidity  | q_1     | 0.00000   | u_component_of_wind | u_1     | 0.363     |v_component_of_wind  | v_1     | 0.245     | temperature  | t_1     | 0.182     |
+|--------|---------|-----------|--------|---------|-----------|--------|---------|-----------|--------|---------|-----------|--------|---------|-----------|
+| relative_humidity | r_1000  | 3.073     | vertical_velocity  w_1000  | 0.059     || 10m_v_component_of_wind  | v10     | 0.367     |
+| relative_humidity | r_975   | 3.192     | vertical_velocity  w_975   | 0.067     || 10m_u_component_of_wind  | u10     | 0.379     |
+| relative_humidity | r_950   | 3.588     | vertical_velocity  w_950   | 0.078     || 100m_v_component_of_wind  | v100    | 0.435     |
+| relative_humidity | r_925   | 3.877     | vertical_velocity  w_925   | 0.086     || 100m_u_component_of_wind  | u100    | 0.445     |
+| relative_humidity | r_900   | 3.982     | vertical_velocity  w_900   | 0.090     || 2m_temperature  | t2m     | 0.720     |
+| relative_humidity | r_875   | 4.011     | vertical_velocity  w_875   | 0.092     || total_cloud_cover  | tcc     | 0.146     |
+| relative_humidity | r_850   | 3.933     | vertical_velocity  w_850   | 0.093     || surface_pressure  | sp      | 480.222   
+| relative_humidity | r_825   | 3.789     | vertical_velocity  w_825   | 0.094     || total_precipitation  | tp1h    | 0.264     |
+| relative_humidity | r_800   | 3.555     | vertical_velocity  w_800   | 0.096     || mean_sea_level_pressure  | msl     | 12.685    |
+| relative_humidity | r_775   | 3.449     | vertical_velocity  w_775   | 0.099     |
+| relative_humidity | r_750   | 3.816     | vertical_velocity  w_750   | 0.102     |
+| relative_humidity | r_700   | 4.265     | vertical_velocity  w_700   | 0.110     |
+| relative_humidity | r_650   | 4.223     | vertical_velocity  w_650   | 0.114     |
+| relative_humidity | r_600   | 4.183     | vertical_velocity  w_600   | 0.112     |
+| relative_humidity | r_550   | 4.411     | vertical_velocity  w_550   | 0.106     |
+| relative_humidity | r_500   | 4.409     | vertical_velocity  w_500   | 0.101     |
+| relative_humidity | r_450   | 4.675     | vertical_velocity  w_450   | 0.096     |
+| relative_humidity | r_400   | 4.831     | vertical_velocity  w_400   | 0.091     |
+| relative_humidity | r_350   | 4.932     | vertical_velocity  w_350   | 0.084     |
+| relative_humidity | r_300   | 5.151     | vertical_velocity  w_300   | 0.075     |
+| relative_humidity | r_250   | 5.134     | vertical_velocity  w_250   | 0.056     |
+| relative_humidity | r_225   | 4.682     | vertical_velocity  w_225   | 0.046     |
+| relative_humidity | r_200   | 3.899     | vertical_velocity  w_200   | 0.039     |
+| relative_humidity | r_175   | 3.063     | vertical_velocity  w_175   | 0.034     |
+| relative_humidity | r_150   | 2.508     | vertical_velocity  w_150   | 0.029     |
+| relative_humidity | r_125   | 2.123     | vertical_velocity  w_125   | 0.024     |
+| relative_humidity | r_100   | 1.844     | vertical_velocity  w_100   | 0.018     |
+| relative_humidity | r_70    | 0.487     | vertical_velocity  w_70    | 0.010     |
+| relative_humidity | r_50    | 0.151     | vertical_velocity  w_50    | 0.007     |
+| relative_humidity | r_30    | 0.097     | vertical_velocity  w_30    | 0.005     |
+| relative_humidity | r_20    | 0.083     | vertical_velocity  w_20    | 0.003     |
+| relative_humidity | r_10    | 0.033     | vertical_velocity  w_10    | 0.002     |
+| relative_humidity | r_7     | 0.016     | vertical_velocity  w_7     | 0.001     |
+| relative_humidity | r_5     | 0.008     | vertical_velocity  w_5     | 0.001     |
+| relative_humidity | r_3     | 0.003     | vertical_velocity  w_3     | 0.001     |
+| relative_humidity | r_2     | 0.001     | vertical_velocity  w_2     | 0.000     |
+| relative_humidity | r_1     | 0.000     | vertical_velocity  w_1     | 0.000     |
+
+
+
 ## Related links
  * Tensorflow compression library by _Ballé et al._: https://github.com/tensorflow/compression
  * Range Asymmetric Numeral System code from _Fabian 'ryg' Giesen_: https://github.com/rygorous/ryg_rans
