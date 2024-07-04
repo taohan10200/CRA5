@@ -39,7 +39,7 @@ class cra5_api():
         self.std = torch.from_numpy(self.std[:,np.newaxis,np.newaxis]).to(device)
         
         self.channels_to_vname, self.vname_to_channels = self.channel_vname_mapping()
-        print(self.channels_to_vname)
+
         self.local_root = local_root
         self.net = vaeformer_pretrained(quality=268, pretrained=True).eval().to(device)
         
