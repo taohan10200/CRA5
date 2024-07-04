@@ -276,7 +276,7 @@ primaryClass={cs.LG}
 
 ## The weather variabls supported in CRA5 and their numerical error
 
-CRA5 contains a total of 268, variables, including 7 pressure-level variablse from the [ERA5 pressure level archive](https://cds.climate.copernicus.eu/cdsapp#!/dataset/reanalysis-era5-pressure-levels) and 9 [surface variables](https://cds.climate.copernicus.eu/cdsapp#!/dataset/reanalysis-era5-single-levels?tab=overview) . 
+CRA5 contains a total of 268 variables, including 7 pressure-level variables from the [ERA5 pressure level archive](https://cds.climate.copernicus.eu/cdsapp#!/dataset/reanalysis-era5-pressure-levels) and 9 [surface variables](https://cds.climate.copernicus.eu/cdsapp#!/dataset/reanalysis-era5-single-levels?tab=overview) . 
 
 | Variable | channel | error   | Variable | channel | error   | Variable | channel | error   |Variable | channel  | error   |Variable | channel  | error   |  
 |--------|---------|-----------|--------|---------|-----------|--------|---------|-----------|--------|---------|-----------|--------|---------|-----------|
