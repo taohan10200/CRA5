@@ -67,7 +67,7 @@ officially supported.
 
 * **Train the large data-driven numerical weather forecasting models with our CRA5**
 
-> **Note**: For researches who do not have enough disk space to store the 300 TiB+ ERA5 dataset, but have interests to to train a large weather forecasting model, like [FengWu-GHR](https://arxiv.org/abs/2402.00059),  this research can help you save it into less than 1 TiB disk.  
+> **Note**: For researches who do not have enough disk space to store the 300 TiB+ ERA5 dataset, but have interests to train a large weather forecasting model, like [FengWu-GHR](https://arxiv.org/abs/2402.00059),  this research can help you save it into less than 1 TiB disk.  
 
 Our preliminary attemp has proven that the CRA5 dataset can train the very very similar NWP model compared with the original ERA5 dataset. Also, with this dataset, you can easily train a Nature published forecasting model, like [Pangu-Weather](https://www.nature.com/articles/s41586-023-06185-3). 
 
