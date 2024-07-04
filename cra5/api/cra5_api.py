@@ -39,6 +39,7 @@ class cra5_api():
         self.std = torch.from_numpy(self.std[:,np.newaxis,np.newaxis]).to(device)
         
         self.channels_to_vname, self.vname_to_channels = self.channel_vname_mapping()
+        print(self.channels_to_vname)
         self.local_root = local_root
         self.net = vaeformer_pretrained(quality=268, pretrained=True).eval().to(device)
         
@@ -62,7 +63,7 @@ class cra5_api():
         data = self.read_data_from_grib(time_stamp)
         data = torch.from_numpy(data).to(self.device)
         x = self.normalization(data).unsqueeze(0)
-        print(x.shape)
+
         with torch.no_grad():
             st = time.time()
             output = self.net.compress(x) 
@@ -72,9 +73,8 @@ class cra5_api():
         year = time_stamp.split('-')[0]
         file_url=f'{save_root}/cra5/{year}/{time_stamp}.bin'
         print(os.path.dirname(file_url))
-        
-        # os.makedirs(os.path.dirname(file_url), exist_ok=True)
-        
+    
+        os.makedirs(os.path.dirname(file_url), exist_ok=True)    
         with Path(file_url).open("wb") as f:
             out_strings = output["strings"]
             shape = output["z_shape"]

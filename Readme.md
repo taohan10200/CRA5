@@ -12,11 +12,11 @@
 
 CRA5 is a extreme **compressed dataset** of the most popular weather dataset ERA5. The repository also includes **compression models**, **forecasting model** for researchers to conduct portable weather and climate research.
 
-CompressAI currently provides:
+CRA5 currently provides:
 
 * A customized variaitional transformer (VAEformer) for climate data compression
-* a partial port of the official [CompressAI](https://github.com/InterDigitalInc/CompressAI) library
-* pre-trained end-to-end compression models for learned climate/weather data compression
+* A dataset CRA5 less than 1 TiB, but contains the same information with 300 TiB ERA5 dataset. Covering ERA5 from year 1979 to 2023 at an houly interval.    
+* A pre-trained Auto-Encoder on the climate/weather data to support some potential weather research.
 
 
 
@@ -36,11 +36,9 @@ pip install cra5
 
 **From source**:
 
-A C++17 compiler, a recent version of pip (19.0+), and common python packages
-are also required (see `setup.py` for the full list).
+A C++17 compiler, a recent version of pip (19.0+), and common python packages are also required (see `setup.py` for the full list).
 
-To get started locally and install the development version of CRA5, run
-the following commands in a [virtual environment](https://docs.python.org/3.6/library/venv.html):
+To get started locally and install the development version of CRA5, run the following commands in a [virtual environment](https://docs.python.org/3.6/library/venv.html):
 
 ```bash
 git https://github.com/taohan10200/CRA5
@@ -65,13 +63,13 @@ officially supported.
 
 # Usages
 
-## 1. CRA5 dataset is a outcome of the VAEformer in the atmospheric science. We explore this to facilitate the research in weather and climate. 
+## 1. CRA5 dataset is an outcome of the VAEformer in the atmospheric science. We explore this to facilitate the research in weather and climate. 
 
-* **Train the large data-driven numerical weather forecasting models with coppressed ERA5 dataset**
+* **Train the large data-driven numerical weather forecasting models with our CRA5**
 
-For researches who do not have enough disk space to store the 200TiB+ ERA5 dataset, but have interests to to train a large weather forecasting model, like [FengWu-GHR](https://arxiv.org/abs/2402.00059),  this research can help you save it into less than 1 TiB disk.  
+> **Note**: For researches who do not have enough disk space to store the 300 TiB+ ERA5 dataset, but have interests to to train a large weather forecasting model, like [FengWu-GHR](https://arxiv.org/abs/2402.00059),  this research can help you save it into less than 1 TiB disk.  
 
-Our preliminary attemp have proven that the CRA5 dataset can train the very very similar NWP model compared with the original ERA5 dataset. Also, with this dataset, you can easily train a Nature published forecasting model, like [Pangu-Weather](https://www.nature.com/articles/s41586-023-06185-3). 
+Our preliminary attemp has proven that the CRA5 dataset can train the very very similar NWP model compared with the original ERA5 dataset. Also, with this dataset, you can easily train a Nature published forecasting model, like [Pangu-Weather](https://www.nature.com/articles/s41586-023-06185-3). 
 
 <!-- ![ID-CompressAI-logo](assets/rmse_acc_bias_activity.png =400x140) -->
 <a href="url"><img src="assets/rmse_acc_bias_activity.png" align="center"></a>
@@ -130,7 +128,7 @@ cra5_API.show_image(
 
 * **Using it as a Auto-Encoder-Decoder**
 
-For people who are intersting in diffusion-based or other generation-based forecasting methods, we can provide a Auto Encoder and decoder for the weather research, you can use our VAEformer to get the latents for downstream research.
+> **Note**: For people who are intersted in diffusion-based or other generation-based forecasting methods, we can provide an Auto Encoder and decoder for the weather research, you can use our VAEformer to get the latents for downstream research.
 
 
 ```python
