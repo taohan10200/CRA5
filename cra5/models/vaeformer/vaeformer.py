@@ -251,23 +251,16 @@ class VAEformer(CompressionModel):
                                 optimizer_idx, 0,
                                 last_layer=self.get_last_layer(), split="train")
 
-        # import pdb
-        # pdb.set_trace()
+
         return  {**discloss, **out_criterion, "aux_loss":self.aux_loss()}
     def prediction(self, inputs):
-        # import pdb
-        # pdb.set_trace()
+
         t1 = time.time()
         out = self.compress(inputs)
         t2 =  time.time()
         x_hat = self.decompress(out['strings'], out['shape'])
         t3 =  time.time()
 
-        # import numpy as np
-        # np.save('./exp/vivt_69dim_gt.npy',inputs.cpu().numpy())
-        # np.save('./exp/vivt_69dim_pred.npy',x_hat['x_hat'].cpu().numpy())
-        # import pdb
-        # pdb.set_trace()
 
         return {
             **x_hat,
@@ -367,22 +360,6 @@ class VAEformer(CompressionModel):
 
         # bpp = sum(len(s[0]) for s in [y_strings, z_strings]) * 8.0 #/ num_pixels
 
-        # import numpy as np
-        # np.save('./exp/test_npy_size_4x69x128x256.npy',x.cpu().numpy())
-        #
-        # np.save('./exp/test_npy_size_4x69x8x16.npy',z.cpu().numpy())
-        # np.save('./exp/test_npy_size_4x69x32x64.npy',y.cpu().numpy())
-        # import pdb
-        # pdb.set_trace()
-        # #
-        # import pickle
-        # with open('./exp/test_y_strings_size_1x256x72x144.csv', 'wb') as f:
-        #     test_data = pickle.dump(y_strings, f)
-        # with open('./exp/test_z_strings_size_1x256x18x36.csv', 'wb') as f:
-        #     test_data = pickle.dump(z_strings, f)
-        # import pdb
-        # pdb.set_trace()
-
         return {"strings": [y_strings, z_strings], "z_shape": z.size()[-2:]}
 
     def decompress(self, 
@@ -397,12 +374,13 @@ class VAEformer(CompressionModel):
         y_hat = self.gaussian_conditional.decompress(
             strings[0], indexes, means=means_hat
         )
+        if return_format=='latent':
+            return y_hat
         
         if self.lower_dim:
             y_hat = self.post_quant_conv(y_hat)
             
-        if return_format=='latent':
-            return y_hat
+
         
         x_hat = self.g_s(y_hat) #.clamp_(0, 1)
 

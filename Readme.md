@@ -43,6 +43,8 @@ To get started locally and install the development version of CRA5, run the foll
 ```bash
 git https://github.com/taohan10200/CRA5
 cd CRA5
+python setup.py install 
+# or 
 pip install -U pip && pip install -e .
 ```
 
