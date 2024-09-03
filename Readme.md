@@ -15,7 +15,7 @@ CRA5 is a extreme **compressed weather dataset** of the most popular ERA5 reanal
 CRA5 currently provides:
 
 * A customized variaitional transformer (VAEformer) for climate data compression
-* A dataset CRA5 less than 1 TiB, but contains the same information with 300 TiB ERA5 dataset. Covering ERA5 from year 1979 to 2023 at an houly interval.    
+* A dataset CRA5 less than TiB, but contains the same information with 400+ TiB ERA5 dataset. Covering houly ERA5 from year 1979 to 2023.    
 * A pre-trained Auto-Encoder on the climate/weather data to support some potential weather research.
 
 
