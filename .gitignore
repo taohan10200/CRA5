@@ -28,3 +28,4 @@ cra5/*.so
 
 # big data
 data/
+test/

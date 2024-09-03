@@ -6,7 +6,7 @@ import time
 import importlib
 import numpy as np
 import matplotlib.pyplot as plt
-from era5_downloader import era5_downloader
+from .era5_downloader import era5_downloader
 if importlib.util.find_spec("mmengine") is not None and sys.version_info >= (2, 0):
     from mmengine import Config, DictAction
 else:
@@ -17,16 +17,17 @@ from pathlib import Path
 from .utils import (filesize, write_uints, write_bytes, read_uints, read_bytes)
 from cra5.models.compressai.zoo import vaeformer_pretrained
 
-current_path = os.path.abspath(__file__)
-directory_path = os.path.dirname(current_path)
+current_file_path = os.path.abspath(__file__)
+directory_path = os.path.dirname(current_file_path)
 work_directory = os.getcwd()
-print(directory_path, work_directory)
+
 
 class cra5_api():
     def __init__(self, 
                  config=f'{directory_path}/cra5_268v_config.py',
                  local_root=f'{work_directory}/data',
                  device = 'cuda' if torch.cuda.is_available() else 'cpu',
+                 ceph_cfg={},
                  ):
         self.device = device 
         print(f'The serving device is {self.device}')
@@ -44,7 +45,7 @@ class cra5_api():
         self.net = vaeformer_pretrained(quality=268, pretrained=True).eval().to(device)
         
     def download_era5_data(self, 
-                           time_stamp:str, 
+                           time_stamp:str=None, 
                            save_root=None,
                            data_formate="nc"):
         save_root = save_root or self.local_root
@@ -87,11 +88,12 @@ class cra5_api():
                 bytes_cnt += write_bytes(f, s[0])
         
     def decode_from_bin(self, 
-                        time_stamp, 
+                        time_stamp:str=None, 
+                        custom_path=None,
                         return_format='de_normlized',
                         ):
 
-        bin_path = f'{self.local_root}/cra5/{time_stamp[:4]}/{time_stamp}.bin'
+        bin_path =  custom_path or f'{self.local_root}/CRA5/{time_stamp[:4]}/{time_stamp}.bin'
         dec_start = time.time()
         with Path(bin_path).open("rb") as f:
             lstrings = []

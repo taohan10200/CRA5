@@ -38,16 +38,17 @@ bucket_name =dict(bucket_name = 'era5_np_float32',
                   )
 local_root ='/nvme/hantao/era5_local/era5_np/' #  '/mnt/petrelfs/hantao/NWP/era5_local/era5_np128x256/' #
 format='.npy' #'.nc'
+
 vname=dict(
-    pressure=['z','q', 'u', 'v', 't','w'],
-    single=['v10','u10','v100', 'u100', 't2m','tcc', 'sp','tp6h', 'msl']) # 'tisr'
+    pressure=['z','q', 'u', 'v', 't', 'r','w'],
+    single=['v10','u10','v100', 'u100', 't2m','tcc', 'sp','tp', 'msl']) #'tisr',
 
 
-pressure_level = [1000., 950., 925., 900., 850.,  
-                  800.,  700., 600., 500., 400.,
-                  300.,  250., 200., 150., 100.,
-                  70.,   50.,  30.,  20.,   10., 
-                  7.,    5.,   3.,   2.,   1.,]
+pressure_level = [1000.,  975.,  950.,  925.,  900.,  875.,  850.,  825.,  800.,
+ 775.,  750.,  700.,  650.,  600.,  550.,  500.,  450.,  400.,
+ 350.,  300.,  250.,  225.,  200.,  175.,  150.,  125.,  100.,
+ 70.,   50.,   30.,   20.,   10.,    7.,    5.,    3.,    2.,
+ 1.]
 
 train_dataloader = dict(
     batch_size=4,

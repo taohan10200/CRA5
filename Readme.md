@@ -9,8 +9,8 @@
 [Paper:CRA5: Extreme Compression of ERA5 for Portable Global Climate and Weather Research via an Efficient Variational Transformer](https://arxiv.org/abs/2405.03376)
 
 # Introduction and get started
-
-CRA5 is a extreme **compressed dataset** of the most popular weather dataset ERA5. The repository also includes **compression models**, **forecasting model** for researchers to conduct portable weather and climate research.
+### CRA5 dataset now is available at [OneDrive](https://hkustconnect-my.sharepoint.com/:f:/g/personal/thanad_connect_ust_hk/EjGupNV_IcZKre1PdN65dFUB2sBOHX3MCH4cycBtcSm2yA?e=GAqS1J)
+CRA5 is a extreme **compressed weather dataset** of the most popular ERA5 reanalysis dataset. The repository also includes **compression models**, **forecasting model** for researchers to conduct portable weather and climate research.
 
 CRA5 currently provides:
 
@@ -25,16 +25,13 @@ CRA5 currently provides:
 ## Installation
 
 CRA5 supports python 3.8+ and PyTorch 1.7+.
-
-**pip**:
-
-```bash
-pip install cra5
+```
+conda create --name cra5 python=3.10 -y 
+conda activate cra5
 ```
 
-> **Note**: wheels are available for Linux and MacOS.
 
-**From source**:
+**Please install cra5 from source**:
 
 A C++17 compiler, a recent version of pip (19.0+), and common python packages are also required (see `setup.py` for the full list).
 
@@ -155,7 +152,7 @@ cra5_API.show_latent(
 <a href="url"><img src="assets/2024-06-01T00:00:00_latent.png" align="center"></a>
 
 
-Script and notebook examples can be found in the `examples/` directory.
+<!-- Script and notebook examples can be found in the `examples/` directory.
 
 To encode/decode images with the provided pre-trained models, run the
 `codec.py` example:
@@ -180,9 +177,9 @@ compression is also provided in the `examples` directory:
 ```bash
 pip install -U ipython jupyter ipywidgets matplotlib
 jupyter notebook examples/
-```
+``` -->
 
-### Evaluation
+<!-- ### Evaluation
 
 To evaluate a trained model on your own dataset, CompressAI provides an
 evaluation script:
@@ -200,8 +197,8 @@ python3 -m compressai.utils.eval_model pretrained /path/to/images/folder/ -a $AR
 To plot results from bench/eval_model simulations (requires matplotlib by default):
 
 ```bash
-python3 -m compressai.utils.plot --help
-```
+python3 -m compressai.utils.plot --help -->
+<!-- ``` -->
 
 <!-- To evaluate traditional codecs:
 
