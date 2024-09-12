@@ -53,15 +53,10 @@ class cra5_api():
                                     time_stamp=time_stamp,
                                     local_root=save_root,
                                     )
-        
-    def encode_era5(self,
+     def encode_to_latent(self,
                      time_stamp:str,
                      save_root=None, 
-                     return_format='bin', 
                      ):
-        ```
-        
-        ```
         save_root = save_root or self.local_root
         # self.download_era5_data(time_stamp)
         data = self.read_data_from_nc(time_stamp)
@@ -71,10 +66,38 @@ class cra5_api():
         with torch.no_grad():
             st = time.time()
             if return_format=='latent':
-                y, _, _ =self.net.encode_latent(self, x, type='quantized'):
+                y, _, _ =self.net.encode_latent( x):
                 return y
             if return_format=='quantized':
-                y, y_hat, y_likelihoods =self.net.encode_latent(self, x, type='quantized'):
+                y, y_hat, y_likelihoods =self.net.encode_latent(x, type='quantized'):
+                return y_hat  
+            
+    def latent_to_bin(self,
+                     y: torch.Tensor,
+                     save_root = None, 
+                     ):
+        with torch.no_grad():
+            binary_stream = self.net.compress_from_latent( y):
+            return binary_stream            
+                   
+    def encode_era5_as_bin(self,
+                     time_stamp:str,
+                     save_root=None, 
+                     return_format='bin', 
+                     ):
+        save_root = save_root or self.local_root
+        # self.download_era5_data(time_stamp)
+        data = self.read_data_from_nc(time_stamp)
+        data = torch.from_numpy(data).to(self.device)
+        x = self.normalization(data).unsqueeze(0)
+
+        with torch.no_grad():
+            st = time.time()
+            if return_format=='latent':
+                y, _, _ =self.net.encode_latent(x, type='quantized'):
+                return y
+            if return_format=='quantized':
+                y, y_hat, y_likelihoods =self.net.encode_latent(x, type='quantized'):
                 return y_hat  
             elif return_format=='bin':  
                 output = self.net.compress(x) 
@@ -97,7 +120,34 @@ class cra5_api():
                 print(len(s))
                 bytes_cnt += write_uints(f, (len(s[0]),))
                 bytes_cnt += write_bytes(f, s[0])
-        
+    
+    def bin_to_latent(self,
+                     bin_path = None, 
+                     ):
+        bin_path =  bin_path or f'{self.local_root}/CRA5/{time_stamp[:4]}/{time_stamp}.bin'
+        dec_start = time.time()
+        with Path(bin_path).open("rb") as f:
+            lstrings = []
+            shape = read_uints(f, 2)
+
+            n_strings = read_uints(f, 1)[0]
+            # print(shape, n_strings)
+            for _ in range(n_strings):
+                s = read_bytes(f, read_uints(f, 1)[0])
+                lstrings.append([s])
+                
+            with torch.no_grad():    
+                if return_format=='latent':
+                    latent =  self.net.decompress(lstrings, shape, return_format='latent')
+                return latent    
+    
+    def latent_to_reconstruction(self,
+                     y_hat: torch.Tensor,
+                     ):
+        with torch.no_grad():
+            x_hat = self.net.decode_latent(y_hat):
+            return x_hat  
+
     def decode_from_bin(self, 
                         time_stamp:str=None, 
                         custom_path=None,

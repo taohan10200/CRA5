@@ -333,6 +333,21 @@ class VAEformer(CompressionModel):
             "likelihoods": {"y": y_likelihoods, "z": z_likelihoods},
             "posterior": posterior
         }
+    def compress_from_latent(self, 
+                 y):
+        
+        z = self.h_a(y)
+
+        z_strings = self.entropy_bottleneck.compress(z)
+        z_hat = self.entropy_bottleneck.decompress(z_strings, z.size()[-2:])
+
+        gaussian_params = self.h_s(z_hat)
+        scales_hat, means_hat = gaussian_params.chunk(2, 1)
+        indexes = self.gaussian_conditional.build_indexes(scales_hat)
+
+        y_strings = self.gaussian_conditional.compress(y, indexes, means=means_hat)
+
+        return {"strings": [y_strings, z_strings], "z_shape": z.size()[-2:]}
 
     def compress(self, 
                  x,
