@@ -247,7 +247,8 @@ class EntropyModel(nn.Module):
         """
 
         symbols = self.quantize(inputs, "symbols", means)
-
+        import pdb
+        pdb.set_trace()
         if len(inputs.size()) < 2:
             raise ValueError(
                 "Invalid `inputs` size. Expected a tensor with at least 2 dimensions."

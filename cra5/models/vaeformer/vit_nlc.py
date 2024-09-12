@@ -25,9 +25,13 @@ from timm.models.layers import drop_path, to_2tuple, trunc_normal_
 cwd = os.getcwd()
 
 from nwp.registry import MODELS
-# from core.utils import NestedTensor
 from mmengine.model import BaseModel
-
+try:
+    from flash_attn import flash_attn_qkvpacked_func, flash_attn_func
+    ATTENTION_MODE = 'flash'
+except:
+    ATTENTION_MODE = 'math'
+    
 
 class DropPath(nn.Module):
     """Drop paths (Stochastic Depth) per sample  (when applied in main path of residual blocks).
@@ -93,14 +97,21 @@ class Attention(nn.Module):
 
     def forward(self, x, H, W):
         B, N, C = x.shape
-        qkv = self.qkv(x).reshape(B, N, 3, self.num_heads, C // self.num_heads)
+        qkv = self.qkv(x)
         
-
-        data_type = qkv.dtype
-        qkv=qkv.to(torch.float16) 
-        x = flash_attn_qkvpacked_func(qkv, dropout_p=0.0, softmax_scale=self.scale, causal=False).reshape(B, N, C)       
-        x=x.to(data_type)
-
+        if ATTENTION_MODE == 'math':
+            qkv = rearrange(qkv, 'B N (K H D) -> K B H N D', K=3, H=self.num_heads)
+            q, k, v = qkv.unbind(0) # make torchscript happy (cannot use tensor as tuple)   --> (batchsize, heads, len, head_dim)
+            attn = ((q * self.scale) @ k.transpose(-2, -1))
+            attn = torch.softmax(attn, dim=-1)
+            x = (attn @ v).transpose(1, 2).reshape(B, N, C)
+        # =====================================
+        elif ATTENTION_MODE == 'flash':
+            qkv = qkv.reshape(B, N, 3, self.num_heads, C // self.num_heads)
+            data_type = qkv.dtype
+            qkv=qkv.to(torch.float16) 
+            x = flash_attn_qkvpacked_func(qkv, dropout_p=0.0, softmax_scale=self.scale, causal=False).reshape(B, N, C)    
+            x=x.to(data_type)
         x = self.proj(x)
         return x
 
@@ -229,23 +240,14 @@ class WindowAttention(nn.Module):
         x = window_partition(x, self.window_size)  # num_Windows*B, window_size, window_size, C
         x = x.view(-1, self.window_size[1] * self.window_size[0], C)  # num_Windows*B, window_size*window_size, C
 
-            
         B_w = x.shape[0]
         N_w = x.shape[1]
-
-
+        
         qkv = self.qkv(x).reshape(B_w, N_w, 3, self.num_heads, C // self.num_heads).permute(2, 0, 3, 1, 4)
         q, k, v = qkv.unbind(0)   # make torchscript happy (cannot use tensor as tuple)   --> (batchsize, heads, len, head_dim)
         attn = ((q * self.scale) @ k.transpose(-2, -1))
         attn = attn.softmax(dim=-1)
         x = (attn @ v).transpose(1, 2).reshape(B_w, N_w, C)
-        
-        ##============use flash atetntion==========
-        # qkv = self.qkv(x).reshape(B_w, N_w, 3, self.num_heads, C // self.num_heads)
-        # data_type = qkv.dtype
-        # qkv=qkv.to(torch.float16) 
-        # x = flash_attn_qkvpacked_func(qkv,dropout_p=0.0, softmax_scale=self.scale, causal=False).reshape(B_w, N_w, C)    
-        # x=x.to(data_type)
             
         x = self.proj(x)
 

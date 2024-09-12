@@ -54,20 +54,31 @@ class cra5_api():
                                     local_root=save_root,
                                     )
         
-    def encoder_era5(self,
+    def encode_era5(self,
                      time_stamp:str,
                      save_root=None, 
+                     return_format='bin', 
                      ):
+        ```
         
+        ```
         save_root = save_root or self.local_root
         # self.download_era5_data(time_stamp)
-        data = self.read_data_from_grib(time_stamp)
+        data = self.read_data_from_nc(time_stamp)
         data = torch.from_numpy(data).to(self.device)
         x = self.normalization(data).unsqueeze(0)
 
         with torch.no_grad():
             st = time.time()
-            output = self.net.compress(x) 
+            if return_format=='latent':
+                y, _, _ =self.net.encode_latent(self, x, type='quantized'):
+                return y
+            if return_format=='quantized':
+                y, y_hat, y_likelihoods =self.net.encode_latent(self, x, type='quantized'):
+                return y_hat  
+            elif return_format=='bin':  
+                output = self.net.compress(x) 
+                
             print(f'The encoding time is {time.time()-st} s')
         print(output["z_shape"])
         
@@ -113,17 +124,17 @@ class cra5_api():
                 else:
                     output =  self.net.decompress(lstrings, shape)
                 
-            if return_format =='normlized':
+            if return_format =='normalized':
                 return output['x_hat']
            
-            elif return_format =='de_normlized':
+            elif return_format =='de_normalized':
                 x_hat = self.de_normalization(output['x_hat'].squeeze(0))
                 print(f"Decoded in {time.time() - dec_start:.2f}s")
                                     
                 return x_hat
     
             
-    def read_data_from_grib(self,
+    def read_data_from_nc(self,
                             time_stamp:str, 
                             ):
         one_step= []
