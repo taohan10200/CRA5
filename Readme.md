@@ -148,7 +148,7 @@ y = cra5_API.encode_to_latent(time_stamp="2024-06-01T00:00:00")
 # Return the the arithmetic coded binary stream of y 
 bin_stream = cra5_API.latent_to_bin(y=y)  
 
-# Or if you want to direcly compress and save the binary stream to a folder
+# Or if you want to directly compress and save the binary stream to a folder
 cra5_API.encode_era5_as_bin(time_stamp="2024-06-01T00:00:00", save_root='./data/cra5')  
 
 
