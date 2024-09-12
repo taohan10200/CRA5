@@ -142,6 +142,8 @@ data = ERA5_data.get_form_timestamp(time_stamp="2024-06-01T00:00:00",
 # After getting the ERA5 data ready, you can explore the compression.
 from cra5.api import cra5_api
 cra5_API = cra5_api()
+
+####=======================compression functions=====================
 # Return a continuous latent y for ERA5 data at 2024-06-01T00:00:00
 y = cra5_API.encode_to_latent(time_stamp="2024-06-01T00:00:00") 
 
@@ -152,15 +154,17 @@ bin_stream = cra5_API.latent_to_bin(y=y)
 cra5_API.encode_era5_as_bin(time_stamp="2024-06-01T00:00:00", save_root='./data/cra5')  
 
 
+####=======================decompression functions=====================
 # Starting from the bin_stream, you can decode the binary file to the quantized latent.
 y_hat = cra5_API.bin_to_latent(bin_path="./data/CRA5/2024/2024-06-01T00:00:00.bin")  # Decoding from binary can only get the quantized latent.
 
-x_hat = cra5_API.latent_to_reconstruction(y_hat=y_hat) # Return the de-normalized cra5 data
+# Return the normalized cra5 data
+normlized_x_hat = cra5_API.latent_to_reconstruction(y_hat=y_hat) 
 
 
 # If you have saveed  or downloaded the binary file, then you can directly restore the binary file into reconstruction.
-normlized_reconstruction = cra5_API.decode_from_bin("2024-06-01T00:00:00", return_format='normalized') # Return the normalized cra5 data
-reconstruction = cra5_API.decode_from_bin("2024-06-01T00:00:00", return_format='de_normalized') # Return the de-normalized cra5 data
+normlized_x_hat = cra5_API.decode_from_bin("2024-06-01T00:00:00", return_format='normalized') # Return the normalized cra5 data
+x_hat = cra5_API.decode_from_bin("2024-06-01T00:00:00", return_format='de_normalized') # Return the de-normalized cra5 data
 
 # show some variables for the constructed data
 cra5_API.show_latent(
