@@ -21,7 +21,7 @@ from einops.layers.torch import Rearrange
 from timm.models.layers import trunc_normal_, DropPath
 import numpy as np
 import math
-from cra5.registry import MODELS
+
 import time
 SCALES_MIN = 0.11
 SCALES_MAX = 256
@@ -311,7 +311,6 @@ class SwinBlock(nn.Module):
         return trans_x
     
 from .waseda import Cheng2020Anchor,Cheng2020Attention
-@MODELS.register_module()
 class TCM2023(CompressionModel):
     def __init__(self, config=[2, 2, 2, 2, 2, 2], head_dim=[8, 16, 32, 32, 16, 8], drop_path_rate=0, N=128,  M=320, num_slices=5, max_support_slices=5,in_channel=69,rate_distortion_loss=None, **kwargs):
         super().__init__(**kwargs)
@@ -423,7 +422,7 @@ class TCM2023(CompressionModel):
         self.gaussian_conditional = GaussianConditional(None)
         
         if rate_distortion_loss is not None:
-            self.criterion = MODELS.build(rate_distortion_loss)
+            self.criterion = None #MODELS.build(rate_distortion_loss)
             
     def update(self, scale_table=None, force=False):
         if scale_table is None:

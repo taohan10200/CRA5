@@ -12,12 +12,12 @@ import  pandas as pd
 import tempfile
 import pdb
 import copy
-from .utils import load_config
+from cra5.utils.config import Config
 from pandas._typing import  DatetimeLikeScalar
 
 class era5_downloader():
     def __init__(self, config):
-        self.cfg = load_config(config)
+        self.cfg = Config.fromfile(config)
         self.proxies = self.env_seting()
         self.ecmwf_dataset_pressure = 'reanalysis-era5-pressure-levels'
         self.ecmwf_dataset_single = 'reanalysis-era5-single-levels'
@@ -90,8 +90,8 @@ class era5_downloader():
 
 
     def env_seting(self):
-        os.environ['CDSAPI_URL'] = 'https://cds.climate.copernicus.eu/api/v2'
-        os.environ['CDSAPI_KEY'] = '178654:df1be719-ec6b-418f-b520-229e3dbd7718'
+        os.environ['CDSAPI_URL'] = 'https://cds.climate.copernicus.eu/api'
+        os.environ['CDSAPI_KEY'] = 'ea3a2607-158c-48a4-bd27-b255256b2759'
         
         if self.cfg.proxy.type=='direct':
             proxies = {}

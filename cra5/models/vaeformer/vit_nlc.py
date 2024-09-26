@@ -23,9 +23,6 @@ from einops import rearrange
 from flash_attn import flash_attn_qkvpacked_func, flash_attn_func
 from timm.models.layers import drop_path, to_2tuple, trunc_normal_
 cwd = os.getcwd()
-
-from nwp.registry import MODELS
-from mmengine.model import BaseModel
 try:
     from flash_attn import flash_attn_qkvpacked_func, flash_attn_func
     ATTENTION_MODE = 'flash'

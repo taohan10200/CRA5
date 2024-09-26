@@ -47,7 +47,6 @@ from cra5.models.compressai.models.base import (
     get_scale_table,
 )
 from cra5.models.compressai.models.utils import conv, deconv
-from cra5.registry import MODELS
 from cra5.models.vaeformer.vit_nlc import Encoder, Decoder,HyperPriorEncoder, HyperPriorDecoder
 from cra5.models.vaeformer.modules.distributions import DiagonalGaussianDistribution
 from cra5.models.compressai.models.google import ScaleHyperprior
@@ -68,7 +67,6 @@ __all__ = [
 ]
 
 
-@MODELS.register_module()
 class VAEformer(CompressionModel):
     """
     Args:

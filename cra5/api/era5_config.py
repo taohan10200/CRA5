@@ -1,4 +1,4 @@
-proxy=dict(type='normal',    #'normal' 'special', 'direct'
+proxy=dict(type='direct',    #'normal' 'special', 'direct'
                 normal='http://10.1.11.100:8086/',
                 special='', #special='http://10.3.3.20:25800/'
             )

@@ -11,7 +11,6 @@ from compressai.ans import BufferedRansEncoder, RansDecoder
 from cra5.models.compressai.layers import conv3x3, subpel_conv3x3
 from cra5.models.compressai.ops import quantize_ste
 from .base import CompressionModel
-from cra5.registry import MODELS
 import time
 
 # From Balle's tensorflow compression examples
@@ -384,7 +383,6 @@ class PatchEmbed(nn.Module):
         return x
 
 
-@MODELS.register_module()
 class SymmetricalTransFormer2022(CompressionModel):
     def __init__(self,
                  pretrain_img_size=256,
@@ -556,7 +554,7 @@ class SymmetricalTransFormer2022(CompressionModel):
         self._freeze_stages()
 
         if rate_distortion_loss is not None:
-            self.criterion = MODELS.build(rate_distortion_loss)
+            self.criterion = None #MODELS.build(rate_distortion_loss)
     def _freeze_stages(self):
         if self.frozen_stages >= 0:
             self.patch_embed.eval()

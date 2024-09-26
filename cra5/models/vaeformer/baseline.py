@@ -47,7 +47,6 @@ from cra5.models.compressai.models.base import (
     get_scale_table,
 )
 from cra5.models.compressai.models.utils import conv, deconv
-from cra5.registry import MODELS
 from cra5.models.vaeformer.vit_nlc import Encoder, Decoder,HyperPriorEncoder, HyperPriorDecoder
 from cra5.models.vaeformer.modules.distributions import DiagonalGaussianDistribution
 from cra5.models.compressai.models.google import ScaleHyperprior
@@ -147,9 +146,9 @@ class VaritionInVaration_CNN_Prior(ScaleHyperprior):
             conv(embed_dim * 3 // 2, embed_dim * 2, stride=1, kernel_size=3),
         )
         if rate_distortion_loss is not None:
-            self.criterion = MODELS.build(rate_distortion_loss)
+            self.criterion = None #MODELS.build(rate_distortion_loss)
         if kl_loss is not None:
-            self.kl_loss = MODELS.build(kl_loss)
+            self.kl_loss = None #MODELS.build(kl_loss)
         if pretrained_vae is not None:
             self.init_from_ckpt(pretrained_vae, ignore_keys=ignore_keys)
 
@@ -324,8 +323,6 @@ class VaritionInVaration_CNN_Prior(ScaleHyperprior):
     def get_last_layer(self):
         return self.g_s.final.weight
 
-
-@MODELS.register_module()
 class MeanScaleHyperprior_Baseline(ScaleHyperprior):
     """Scale Hyperprior with non zero-mean Gaussian conditionals from D.
     Minnen, J. Balle, G.D. Toderici: `"Joint Autoregressive and Hierarchical
@@ -391,7 +388,7 @@ class MeanScaleHyperprior_Baseline(ScaleHyperprior):
             conv(embed_dim * 3 // 2, embed_dim * 2, stride=1, kernel_size=3),
         )
         self.lower_channel=conv(2*embed_dim, embed_dim, stride=1, kernel_size=3)
-        self.criterion = MODELS.build(rate_distortion_loss)
+        self.criterion = None #MODELS.build(rate_distortion_loss)
 
     def training_step(self, inputs, batch_idx, optimizer_idx):
         out_net = self(inputs)
@@ -460,7 +457,6 @@ class MeanScaleHyperprior_Baseline(ScaleHyperprior):
     def get_last_layer(self):
         return self.g_s.final.weight
 
-@MODELS.register_module()
 class VaritionInVaration_Former_Baseline(MeanScaleHyperprior_Baseline):
     """
     Args:

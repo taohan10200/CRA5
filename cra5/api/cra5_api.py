@@ -9,7 +9,9 @@ import matplotlib.pyplot as plt
 from .era5_downloader import era5_downloader
 import xarray as xr
 from pathlib import Path
-from .utils import (filesize, write_uints, write_bytes, read_uints, read_bytes,load_config)
+from .utils import (filesize, write_uints, write_bytes, read_uints, read_bytes)
+from cra5.utils.config import Config
+
 from cra5.models.compressai.zoo import vaeformer_pretrained
 
 current_file_path = os.path.abspath(__file__)
@@ -26,9 +28,7 @@ class cra5_api():
                  ):
         self.device = device 
         print(f'The serving device is {self.device}')
-        self.cfg = load_config(config)
-        import pdb
-        pdb.set_trace()
+        self.cfg = Config.fromfile(config)
         self.era5 = era5_downloader(f'{directory_path}/era5_config.py')
         self.level_mapping = [self.cfg.total_levels.index(val) \
             for val in self.cfg.pressure_level if val in self.cfg.total_levels ]
@@ -52,7 +52,8 @@ class cra5_api():
                                     )
     def encode_to_latent(self,
                      time_stamp:str,
-                     save_root=None, 
+                     save_root=None,
+                     latent_type='float' 
                      ):
         save_root = save_root or self.local_root
         # self.download_era5_data(time_stamp)
@@ -62,10 +63,11 @@ class cra5_api():
 
         with torch.no_grad():
             st = time.time()
-            if return_format=='latent':
-                y, _, _ =self.net.encode_latent( x)
+            if latent_type=='float':
+                y, _, _ =self.net.encode_latent(x)
+                print(f'encoding time:{time.time()-st}')   
                 return y
-            if return_format=='quantized':
+            if latent_type=='quantized':
                 y, y_hat, y_likelihoods =self.net.encode_latent(x, type='quantized')
                 return y_hat  
             
@@ -134,8 +136,7 @@ class cra5_api():
                 lstrings.append([s])
                 
             with torch.no_grad():    
-                if return_format=='latent':
-                    latent =  self.net.decompress(lstrings, shape, return_format='latent')
+                latent =  self.net.decompress(lstrings, shape, return_format='latent')
                 return latent    
     
     def latent_to_reconstruction(self,
@@ -264,8 +265,9 @@ class cra5_api():
                    time_stamp,                           
                    show_variables:list=['z_500', 'q_500', 'u_500', 'v_500', 't_500', 'w_500'],
                    save_images=True,
+                    save_path=None,
                     ):
-        input_data = self.read_data_from_grib(time_stamp)
+        input_data = self.read_data_from_nc(time_stamp)
         vis_data_list = []
         for vname in show_variables:
             data_ori = input_data[self.vname_to_channels[vname]]
@@ -294,7 +296,10 @@ class cra5_api():
         plt.tight_layout()
 
         plt.show()
-        fig_path = f'{self.local_root}/cra5_vis/{time_stamp[:4]}/{time_stamp}.png'
+        if save_root is not None:
+            fig_path = f'{save_path}/{time_stamp}_latent.png'
+        else:
+            fig_path = f'{self.local_root}/cra5_vis/{time_stamp[:4]}/{time_stamp}.png'
         os.makedirs(os.path.dirname(fig_path), exist_ok=True)
         if save_images:
             plt.savefig(fig_path)
@@ -304,8 +309,9 @@ class cra5_api():
                    time_stamp,                           
                    show_channels:list=[0, 10, 20, 30, 40, 50, 60, 70, 80],
                    save_images=True,
+                   save_path=None,
                     ):
-        input_data = self.read_data_from_grib(time_stamp)
+        input_data = self.read_data_from_nc(time_stamp)
 
 
         fig, axs = plt.subplots(len(show_channels)//4, 4, figsize=( 24, 3*len(show_channels)//4))
@@ -318,7 +324,10 @@ class cra5_api():
         
         plt.tight_layout()
         plt.show()
-        fig_path = f'{self.local_root}/cra5_vis/{time_stamp[:4]}/{time_stamp}_latent.png'
+        if save_root is not None:
+            fig_path = f'{save_path}/{time_stamp}_latent.png'
+        else:
+            fig_path = f'{self.local_root}/cra5_vis/{time_stamp[:4]}/{time_stamp}_latent.png'
         os.makedirs(os.path.dirname(fig_path), exist_ok=True)
         if save_images:
             plt.savefig(fig_path)

@@ -16,7 +16,6 @@ from cra5.models.compressai.models import CompressionModel
 from cra5.models.compressai.ops import quantize_ste
 from cra5.models.compressai.models.utils import conv, deconv, update_registered_buffers
 
-from cra5.registry import MODELS
 import time
 # From Balle's tensorflow compression examples
 SCALES_MIN = 0.11
@@ -69,7 +68,7 @@ class Quantizer():
             return torch.round(inputs) - inputs.detach() + inputs
         else:
             return torch.round(inputs)
-@MODELS.register_module()
+
 class ELIC2022(CompressionModel):
 
     def __init__(self, N=192, M=320, num_slices=5,in_chans=69, rate_distortion_loss=None, **kwargs):
@@ -170,7 +169,7 @@ class ELIC2022(CompressionModel):
         self.gaussian_conditional = GaussianConditional(None)
         
         if rate_distortion_loss is not None:
-            self.criterion = MODELS.build(rate_distortion_loss)
+            self.criterion = None #MODELS.build(rate_distortion_loss)
 
     @property
     def downsampling_factor(self) -> int:

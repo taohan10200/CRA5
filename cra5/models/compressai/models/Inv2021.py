@@ -7,10 +7,7 @@ import warnings
 from .InvUtils import *
 from cra5.models.compressai.layers import *
 from .waseda import Cheng2020Anchor,Cheng2020Attention
-from cra5.registry import MODELS
 
-
-@MODELS.register_module()
 class InvCompress(Cheng2020Attention):
     def __init__(self, N=192,in_channel=69,rate_distortion_loss=None, **kwargs):
         super().__init__(N=N,in_channel=in_channel,rate_distortion_loss=rate_distortion_loss)

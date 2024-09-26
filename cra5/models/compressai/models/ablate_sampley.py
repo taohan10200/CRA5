@@ -47,7 +47,6 @@ from .base import (
     get_scale_table,
 )
 from .utils import conv, deconv
-from cra5.registry import MODELS
 from cra5.models.vaeformer.modules.distributions import DiagonalGaussianDistribution
 from .google import ScaleHyperprior
 __all__ = [
@@ -66,7 +65,6 @@ __all__ = [
 
 
 # @register_model("mbt2018-mean")
-@MODELS.register_module()
 class SampledYInBmshj2018(ScaleHyperprior):
     r"""Scale Hyperprior with non zero-mean Gaussian conditionals from D.
     Minnen, J. Balle, G.D. Toderici: `"Joint Autoregressive and Hierarchical
@@ -155,9 +153,9 @@ class SampledYInBmshj2018(ScaleHyperprior):
             conv(N, M * 2, stride=1, kernel_size=3),
         )
         
-        self.criterion = MODELS.build(rate_distortion_loss)
+        self.criterion = None #MODELS.build(rate_distortion_loss)
         if kl_loss is not None:
-            self.kl_loss = MODELS.build(kl_loss)
+            self.kl_loss = None #MODELS.build(kl_loss)
         if pretraind_vae is not None:
             self.init_from_ckpt(pretraind_vae, ignore_keys=ignore_keys)
 

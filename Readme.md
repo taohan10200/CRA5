@@ -102,7 +102,8 @@ x_hat = cra5_API.decode_from_bin("2024-06-01T00:00:00", return_format='de_normal
 cra5_API.show_latent(
 	latent=y_hat.squeeze(0).cpu().numpy(), 
 	time_stamp="2024-06-01T00:00:00", 
-	show_channels=[0, 10, 20, 30, 40, 50, 60, 70, 80, 90, 100, 110, 120, 130, 140, 150])
+	show_channels=[0, 10, 20, 30, 40, 50, 60, 70, 80, 90, 100, 110, 120, 130, 140, 150],
+    save_path = './data/vis')
 
 ```
 <!-- ![ID-CompressAI-logo](assets/2024-06-01T00:00:00_latent.png =400x140) -->
@@ -113,7 +114,8 @@ cra5_API.show_latent(
 cra5_API.show_image(
 	reconstruct_data=x_hat.cpu().numpy(), 
 	time_stamp="2024-06-01T00:00:00", 
-	show_variables=['z_500', 'q_500', 'u_500', 'v_500', 't_500', 'w_500'])
+	show_variables=['z_500', 'q_500', 'u_500', 'v_500', 't_500', 'w_500'],
+    save_path = './data/vis')
 ```
 
 <!-- ![ID-CompressAI-logo](assets/CRA5LOGO.svg =400x140) -->
