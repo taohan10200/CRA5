@@ -40,7 +40,7 @@ from cra5.models.compressai.layers import (
 from compressai.registry import register_model
 
 from .google import JointAutoregressiveHierarchicalPriors
-from cra5.registry import MODELS
+
 
 @register_model("cheng2020-anchor")
 class Cheng2020Anchor(JointAutoregressiveHierarchicalPriors):
@@ -114,7 +114,6 @@ class Cheng2020Anchor(JointAutoregressiveHierarchicalPriors):
 
 
 # @register_model("cheng2020-attn")
-@MODELS.register_module()
 class Cheng2020Attention(Cheng2020Anchor):
     """Self-attention model variant from `"Learned Image Compression with
     Discretized Gaussian Mixture Likelihoods and Attention Modules"
@@ -156,7 +155,7 @@ class Cheng2020Attention(Cheng2020Anchor):
             subpel_conv3x3(N, in_channel, 2),
         )
         if rate_distortion_loss is not None:
-            self.criterion = MODELS.build(rate_distortion_loss)
+            self.criterion = None #MODELS.build(rate_distortion_loss)
 
 
     def training_step(self, inputs, batch_idx, optimizer_idx):

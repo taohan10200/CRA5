@@ -1,6 +1,13 @@
     
 import struct
 from pathlib import Path
+import importlib.util
+
+def load_config(file_path):
+    spec = importlib.util.spec_from_file_location("config", file_path)
+    module = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(module)
+    return module.config
 
 def filesize(filepath: str) -> int:
     if not Path(filepath).is_file():

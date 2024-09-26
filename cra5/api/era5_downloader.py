@@ -1,10 +1,6 @@
 import os
 import importlib.util
 import sys
-if importlib.util.find_spec("mmengine") is not None and sys.version_info >= (2, 0):
-    from mmengine import Config, DictAction
-else:
-    from mmcv import Config, DictAction
 import argparse
 import cdsapi
 import urllib3
@@ -16,11 +12,12 @@ import  pandas as pd
 import tempfile
 import pdb
 import copy
+from .utils import load_config
 from pandas._typing import  DatetimeLikeScalar
 
 class era5_downloader():
     def __init__(self, config):
-        self.cfg = Config.fromfile(config)
+        self.cfg = load_config(config)
         self.proxies = self.env_seting()
         self.ecmwf_dataset_pressure = 'reanalysis-era5-pressure-levels'
         self.ecmwf_dataset_single = 'reanalysis-era5-single-levels'

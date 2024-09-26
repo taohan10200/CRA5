@@ -7,14 +7,9 @@ import importlib
 import numpy as np
 import matplotlib.pyplot as plt
 from .era5_downloader import era5_downloader
-if importlib.util.find_spec("mmengine") is not None and sys.version_info >= (2, 0):
-    from mmengine import Config, DictAction
-else:
-    from mmcv import Config, DictAction
-import numpy as np
 import xarray as xr
 from pathlib import Path
-from .utils import (filesize, write_uints, write_bytes, read_uints, read_bytes)
+from .utils import (filesize, write_uints, write_bytes, read_uints, read_bytes,load_config)
 from cra5.models.compressai.zoo import vaeformer_pretrained
 
 current_file_path = os.path.abspath(__file__)
@@ -31,7 +26,9 @@ class cra5_api():
                  ):
         self.device = device 
         print(f'The serving device is {self.device}')
-        self.cfg = Config.fromfile(config)
+        self.cfg = load_config(config)
+        import pdb
+        pdb.set_trace()
         self.era5 = era5_downloader(f'{directory_path}/era5_config.py')
         self.level_mapping = [self.cfg.total_levels.index(val) \
             for val in self.cfg.pressure_level if val in self.cfg.total_levels ]
@@ -66,10 +63,10 @@ class cra5_api():
         with torch.no_grad():
             st = time.time()
             if return_format=='latent':
-                y, _, _ =self.net.encode_latent( x):
+                y, _, _ =self.net.encode_latent( x)
                 return y
             if return_format=='quantized':
-                y, y_hat, y_likelihoods =self.net.encode_latent(x, type='quantized'):
+                y, y_hat, y_likelihoods =self.net.encode_latent(x, type='quantized')
                 return y_hat  
             
     def latent_to_bin(self,
@@ -77,7 +74,7 @@ class cra5_api():
                      save_root = None, 
                      ):
         with torch.no_grad():
-            binary_stream = self.net.compress_from_latent( y):
+            binary_stream = self.net.compress_from_latent( y)
             return binary_stream            
                    
     def encode_era5_as_bin(self,
@@ -94,10 +91,10 @@ class cra5_api():
         with torch.no_grad():
             st = time.time()
             if return_format=='latent':
-                y, _, _ =self.net.encode_latent(x, type='quantized'):
+                y, _, _ =self.net.encode_latent(x, type='quantized')
                 return y
             if return_format=='quantized':
-                y, y_hat, y_likelihoods =self.net.encode_latent(x, type='quantized'):
+                y, y_hat, y_likelihoods =self.net.encode_latent(x, type='quantized')
                 return y_hat  
             elif return_format=='bin':  
                 output = self.net.compress(x) 
@@ -145,7 +142,7 @@ class cra5_api():
                      y_hat: torch.Tensor,
                      ):
         with torch.no_grad():
-            x_hat = self.net.decode_latent(y_hat):
+            x_hat = self.net.decode_latent(y_hat)
             return x_hat  
 
     def decode_from_bin(self, 
