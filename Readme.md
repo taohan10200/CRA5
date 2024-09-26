@@ -98,7 +98,7 @@ normlized_x_hat = cra5_API.latent_to_reconstruction(y_hat=y_hat)
 normlized_x_hat = cra5_API.decode_from_bin("2024-06-01T00:00:00", return_format='normalized') # Return the normalized cra5 data
 x_hat = cra5_API.decode_from_bin("2024-06-01T00:00:00", return_format='de_normalized') # Return the de-normalized cra5 data
 
-# show some channels of the latent
+# Show some channels of the latent
 cra5_API.show_latent(
 	latent=y_hat.squeeze(0).cpu().numpy(), 
 	time_stamp="2024-06-01T00:00:00", 
