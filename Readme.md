@@ -38,7 +38,7 @@ A C++17 compiler, a recent version of pip (19.0+), and common python packages ar
 To get started locally and install the development version of CRA5, run the following commands in a [virtual environment](https://docs.python.org/3.6/library/venv.html):
 
 ```bash
-git https://github.com/taohan10200/CRA5
+git clone https://github.com/taohan10200/CRA5
 cd CRA5
 python setup.py install 
 # or 
@@ -106,7 +106,7 @@ cra5_API.show_latent(
 
 ```
 <!-- ![ID-CompressAI-logo](assets/2024-06-01T00:00:00_latent.png =400x140) -->
-<a href="url"><img src="assets/2024-06-01T00:00:00_latent.png" align="center"></a>
+<a href="url"><img src="assets/2024-06-01T00_latent.png" align="center"></a>
 
 ```python
 # show some variables for the constructed data
@@ -117,7 +117,7 @@ cra5_API.show_image(
 ```
 
 <!-- ![ID-CompressAI-logo](assets/CRA5LOGO.svg =400x140) -->
-<a href="url"><img src="assets/2024-06-01T00:00:00.png" align="center"></a>
+<a href="url"><img src="assets/2024-06-01T00.png" align="center"></a>
 
 
 
