@@ -45,13 +45,12 @@ python setup.py install
 pip install -U pip && pip install -e .
 ```
 
-For a custom installation, you can also run one of the following commands:
+<!-- For a custom installation, you can also run one of the following commands:
 * `pip install -e '.[dev]'`: install the packages required for development (testing, linting, docs)
 * `pip install -e '.[tutorials]'`: install the packages required for the tutorials (notebooks)
-* `pip install -e '.[all]'`: install all the optional packages
+* `pip install -e '.[all]'`: install all the optional packages -->
 
-> **Note**: Docker images will be released in the future. Conda environments are not
-officially supported.
+
 
 <!-- ## Documentation -->
 
@@ -61,75 +60,8 @@ officially supported.
 * [List of available models (model zoo)](https://interdigitalinc.github.io/CompressAI/zoo.html) -->
 
 # Usages
-
-## 1. CRA5 dataset is an outcome of the VAEformer in the atmospheric science. We explore this to facilitate the research in weather and climate. 
-
-* **Train the large data-driven numerical weather forecasting models with our CRA5**
-
-> **Note**: For researches who do not have enough disk space to store the 300 TiB+ ERA5 dataset, but have interests to train a large weather forecasting model, like [FengWu-GHR](https://arxiv.org/abs/2402.00059),  this research can help you save it into less than 1 TiB disk.  
-
-Our preliminary attemp has proven that the CRA5 dataset can train the very very similar NWP model compared with the original ERA5 dataset. Also, with this dataset, you can easily train a Nature published forecasting model, like [Pangu-Weather](https://www.nature.com/articles/s41586-023-06185-3). 
-
-<!-- ![ID-CompressAI-logo](assets/rmse_acc_bias_activity.png =400x140) -->
-<a href="url"><img src="assets/rmse_acc_bias_activity.png" align="center"></a>
-
-## 2. VAEformer is a powerful compression model, we hope it can be extended to other domains, like image and video compression.
-
-<!-- ![ID-CompressAI-logo](assets/MSE_supp_new.png =400x140) -->
-<a href="url"><img src="assets/MSE_supp_new.png" align="center"></a>
-
-
-*  **We here demonstrate how to use it for weather data compression and decompression**
-
-
-```python
-import os 
-import torch
-from cra5.models.compressai.zoo import vaeformer_pretrained
-device = 'cuda' if torch.cuda.is_available() else 'cpu'
-print(device)
-net = vaeformer_pretrained(quality=268, pretrained=True).eval().to(device)
-input_data_norm = torch.rand(1,268, 721,1440).to(device) #This is a proxy weather data. It actually should be a 
-
-print(x.shape)
-with torch.no_grad():
-    out_net = net.compress(x) 
-    
-print(out_net)
-```
-or directly using our API
-
-
-```python
-from cra5.api import cra5_api
-cra5_API = cra5_api()
-# This command will download two ERA5 netcdf files 
-# data/ERA5/2024/2024-06-01T00:00:00_pressure.nc (513MiB) and data/ERA5/2024/2024-06-01T00:00:00_single.nc (18MiB) 
-# and then compress it into a tiny binary file `./data/cra5/2024/2024-06-01T00:00:00.bin` (**1.8Mib**)
-cra5_API.encoder_era5(time_stamp="2024-06-01T00:00:00") 
-
-# If you aready have the compressed binary file,  this command will help you get the reconstructed weather data.
-cra5_data = cra5_API.decode_from_bin(time_stamp="2024-06-01T00:00:00")
-
-# show some variables for the constructed data
-cra5_API.show_image(
-	reconstruct_data=cra5_data.cpu().numpy(), 
-	time_stamp="2024-06-01T00:00:00", 
-	show_variables=['z_500', 'q_500', 'u_500', 'v_500', 't_500', 'w_500'])
-
-```
-<!-- ![ID-CompressAI-logo](assets/CRA5LOGO.svg =400x140) -->
-<a href="url"><img src="assets/2024-06-01T00:00:00.png" align="center"></a>
-
-
-
-## 3 VAEformer is based on the Auto-Encoder-Decoder, we provide a pretrained VAE for the weather research, you can use our VAEformer to get the latents for downstream research, like diffusion-based or other generation-based forecasting methods.
-
-* **Using it as a Auto-Encoder-Decoder**
-
-> **Note**: For people who are intersted in diffusion-based or other generation-based forecasting methods, we can provide an Auto Encoder and decoder for the weather research, you can use our VAEformer to get the latents for downstream research.
-
-
+## Using with API: 
+> Supporting functions like: Compression / decompression / latents representation / feature visulization / reconstructed visulization
 ```python
 # We build a downloader to help use download the original ERA5 netcdf files for testing.
 
@@ -166,7 +98,7 @@ normlized_x_hat = cra5_API.latent_to_reconstruction(y_hat=y_hat)
 normlized_x_hat = cra5_API.decode_from_bin("2024-06-01T00:00:00", return_format='normalized') # Return the normalized cra5 data
 x_hat = cra5_API.decode_from_bin("2024-06-01T00:00:00", return_format='de_normalized') # Return the de-normalized cra5 data
 
-# show some variables for the constructed data
+# show some channels of the latent
 cra5_API.show_latent(
 	latent=y_hat.squeeze(0).cpu().numpy(), 
 	time_stamp="2024-06-01T00:00:00", 
@@ -175,6 +107,67 @@ cra5_API.show_latent(
 ```
 <!-- ![ID-CompressAI-logo](assets/2024-06-01T00:00:00_latent.png =400x140) -->
 <a href="url"><img src="assets/2024-06-01T00:00:00_latent.png" align="center"></a>
+
+```python
+# show some variables for the constructed data
+cra5_API.show_image(
+	reconstruct_data=x_hat.cpu().numpy(), 
+	time_stamp="2024-06-01T00:00:00", 
+	show_variables=['z_500', 'q_500', 'u_500', 'v_500', 't_500', 'w_500'])
+```
+
+<!-- ![ID-CompressAI-logo](assets/CRA5LOGO.svg =400x140) -->
+<a href="url"><img src="assets/2024-06-01T00:00:00.png" align="center"></a>
+
+
+
+### Or using with the pre-trained model
+
+```python
+import os 
+import torch
+from cra5.models.compressai.zoo import vaeformer_pretrained
+device = 'cuda' if torch.cuda.is_available() else 'cpu'
+print(device)
+net = vaeformer_pretrained(quality=268, pretrained=True).eval().to(device)
+input_data_norm = torch.rand(1,268, 721,1440).to(device) #This is a proxy weather data. It actually should be a 
+
+print(x.shape)
+with torch.no_grad():
+    out_net = net.compress(x) 
+    
+print(out_net)
+```
+
+
+
+# Features
+
+## 1. CRA5 dataset is a product of the VAEformer applied in the atmospheric science. We explore this to facilitate the research in weather and climate. 
+
+* **Train the large data-driven numerical weather forecasting models with our CRA5**
+
+> **Note**: For researches who do not have enough disk space to store the 300 TiB+ ERA5 dataset, but have interests to train a large weather forecasting model, like [FengWu-GHR](https://arxiv.org/abs/2402.00059),  this research can help you save it into less than 1 TiB disk.  
+
+Our preliminary attemp has proven that the CRA5 dataset can train the very very similar NWP model compared with the original ERA5 dataset. Also, with this dataset, you can easily train a Nature published forecasting model, like [Pangu-Weather](https://www.nature.com/articles/s41586-023-06185-3). 
+
+<!-- ![ID-CompressAI-logo](assets/rmse_acc_bias_activity.png =400x140) -->
+<a href="url"><img src="assets/rmse_acc_bias_activity.png" align="center"></a>
+
+## 2. VAEformer is a powerful compression model, we hope it can be extended to other domains, like image and video compression.
+
+<!-- ![ID-CompressAI-logo](assets/MSE_supp_new.png =400x140) -->
+<a href="url"><img src="assets/MSE_supp_new.png" align="center"></a>
+
+
+
+## 3 VAEformer is based on the Auto-Encoder-Decoder, we provide a pretrained VAE for the weather research, you can use our VAEformer to get the latents for downstream research, like diffusion-based or other generation-based forecasting methods.
+
+* **Using it as a Auto-Encoder-Decoder**
+
+> **Note**: For people who are intersted in diffusion-based or other generation-based forecasting methods, we can provide an Auto Encoder and decoder for the weather research, you can use our VAEformer to get the latents for downstream research.
+
+
 
 
 <!-- Script and notebook examples can be found in the `examples/` directory.
