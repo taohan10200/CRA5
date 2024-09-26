@@ -165,5 +165,5 @@ setup(
         "Topic :: Scientific/Engineering :: Artificial Intelligence",
     ],
     ext_modules=[],
-    cmdclass={"build_ext": build_ext},
+    cmdclass={"build_ext": BuildExtension},
 )
