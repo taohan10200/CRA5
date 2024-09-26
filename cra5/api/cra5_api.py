@@ -53,7 +53,7 @@ class cra5_api():
                                     time_stamp=time_stamp,
                                     local_root=save_root,
                                     )
-     def encode_to_latent(self,
+    def encode_to_latent(self,
                      time_stamp:str,
                      save_root=None, 
                      ):
