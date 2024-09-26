@@ -59,6 +59,11 @@ pip install -U pip && pip install -e .
 * [Training your own model](https://interdigitalinc.github.io/CompressAI/tutorials/tutorial_train.html)
 * [List of available models (model zoo)](https://interdigitalinc.github.io/CompressAI/zoo.html) -->
 
+# Test
+```
+python test.py
+``` 
+
 # Usages
 ## Using with API: 
 > Supporting functions like: Compression / decompression / latents representation / feature visulization / reconstructed visulization
