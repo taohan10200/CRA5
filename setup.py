@@ -32,8 +32,10 @@ import subprocess
 
 from pathlib import Path
 
-from pybind11.setup_helpers import Pybind11Extension, build_ext
+# from pybind11.setup_helpers import Pybind11Extension, build_ext
 from setuptools import find_packages, setup
+from torch.utils.cpp_extension import (BuildExtension, CppExtension,
+                                       CUDAExtension)
 
 cwd = Path(__file__).resolve().parent
 
@@ -162,6 +164,6 @@ setup(
         "Programming Language :: Python :: 3.10",
         "Topic :: Scientific/Engineering :: Artificial Intelligence",
     ],
-    ext_modules=get_extensions(),
+    ext_modules=[],
     cmdclass={"build_ext": build_ext},
 )
