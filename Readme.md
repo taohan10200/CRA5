@@ -15,7 +15,7 @@ CRA5 is a extreme **compressed weather dataset** of the most popular ERA5 reanal
 CRA5 currently provides:
 
 * A customized variaitional transformer (VAEformer) for climate data compression
-* A dataset CRA5 less than TiB, but contains the same information with 400+ TiB ERA5 dataset. Covering houly ERA5 from year 1979 to 2023.    
+* A dataset CRA5 less than 1 TiB, but contains the same information with 400+ TiB ERA5 dataset. Covering houly ERA5 from year 1979 to 2023.    
 * A pre-trained Auto-Encoder on the climate/weather data to support some potential weather research.
 
 
@@ -383,11 +383,4 @@ CRA5 contains a total of 268 variables, including 7 pressure-level variables fro
 
 
 ## Related links
- * Tensorflow compression library by _Ballé et al._: https://github.com/tensorflow/compression
- * Range Asymmetric Numeral System code from _Fabian 'ryg' Giesen_: https://github.com/rygorous/ryg_rans
- * BPG image format by _Fabrice Bellard_: https://bellard.org/bpg
- * HEVC HM reference software: https://hevc.hhi.fraunhofer.de
- * VVC VTM reference software: https://vcgit.hhi.fraunhofer.de/jvet/VVCSoftware_VTM
- * AOM AV1 reference software: https://aomedia.googlesource.com/aom
- * Z. Cheng et al. 2020: https://github.com/ZhengxueCheng/Learned-Image-Compression-with-GMM-and-Attention
- * Kodak image dataset: http://r0k.us/graphics/kodak/
+ * CompressAI Library: https://github.com/InterDigitalInc/CompressAI
