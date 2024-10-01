@@ -34,7 +34,6 @@ from pathlib import Path
 
 # from pybind11.setup_helpers import Pybind11Extension, build_ext
 from setuptools import find_packages, setup
-from pybind11.setup_helpers import Pybind11Extension, build_ext
 
 cwd = Path(__file__).resolve().parent
 
@@ -164,5 +163,5 @@ setup(
         "Topic :: Scientific/Engineering :: Artificial Intelligence",
     ],
     ext_modules=[],
-    cmdclass={"build_ext": build_ext},
+    # cmdclass={"build_ext": build_ext},
 )
