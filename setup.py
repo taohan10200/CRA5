@@ -34,8 +34,7 @@ from pathlib import Path
 
 # from pybind11.setup_helpers import Pybind11Extension, build_ext
 from setuptools import find_packages, setup
-from torch.utils.cpp_extension import (BuildExtension, CppExtension,
-                                       CUDAExtension)
+from pybind11.setup_helpers import Pybind11Extension, build_ext
 
 cwd = Path(__file__).resolve().parent
 
@@ -165,5 +164,5 @@ setup(
         "Topic :: Scientific/Engineering :: Artificial Intelligence",
     ],
     ext_modules=[],
-    cmdclass={"build_ext": BuildExtension},
+    cmdclass={"build_ext": build_ext},
 )
