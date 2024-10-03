@@ -1,11 +1,17 @@
+cdsapi
+rich
+numpy>=1.21.0
+torchvision>=0.15.0, <0.19.0
+torch>=1.7.1, <2.1
+torch-geometric>=2.3.0
+typing-extensions>=4.0.0
+tqdm
 addict==2.4.0
-cdsapi==0.7.3
 dict_recursive_update==1.0.1
 einops==0.8.0
 flash_attn
 h5py==3.9.0
 matplotlib==3.7.1
-mmcv==2.1.0
 numpy==1.25.0rc1
 opencv_python==4.7.0.72
 opencv_python_headless==4.7.0.72
