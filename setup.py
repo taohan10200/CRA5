@@ -32,7 +32,7 @@ import subprocess
 
 from pathlib import Path
 
-# from pybind11.setup_helpers import Pybind11Extension, build_ext
+from pybind11.setup_helpers import Pybind11Extension, build_ext
 from setuptools import find_packages, setup
 
 cwd = Path(__file__).resolve().parent
@@ -101,8 +101,6 @@ DEV_REQUIRES = TEST_REQUIRES + [
     "black",
     "flake8",
     "flake8-bugbear",
-    
-    
     "flake8-comprehensions",
     "isort",
     "mypy",
@@ -117,7 +115,6 @@ def get_extra_requirements():
     extras_require = {
         "test": TEST_REQUIRES,
         "dev": DEV_REQUIRES,
-        "doc": ["sphinx", "sphinx-book-theme", "Jinja2<3.1"],
         "tutorials": ["jupyter", "ipywidgets"],
         "pointcloud": POINTCLOUD_REQUIRES,
     }
@@ -163,5 +160,5 @@ setup(
         "Topic :: Scientific/Engineering :: Artificial Intelligence",
     ],
     ext_modules=[],
-    # cmdclass={"build_ext": build_ext},
+    cmdclass={"build_ext": build_ext},
 )
