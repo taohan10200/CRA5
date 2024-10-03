@@ -125,7 +125,6 @@ def get_extra_requirements():
 
 setup(
     name=package_name,
-    include_package_data=True,
     version=version,
     description="A large compression model for weather and climate data.",
     url="https://github.com/taohan10200/CRA5",
