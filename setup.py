@@ -132,6 +132,7 @@ setup(
     author="HAN Tao",
     author_email="hantao10200@gmail.com",
     packages=find_packages(exclude=("tests",)),
+    include_package_data=True,
     zip_safe=False,
     python_requires=">=3.8",
     install_requires=[
