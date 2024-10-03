@@ -115,6 +115,7 @@ def get_extra_requirements():
     extras_require = {
         "test": TEST_REQUIRES,
         "dev": DEV_REQUIRES,
+        "doc": ["sphinx", "sphinx-book-theme", "Jinja2<3.1"],
         "tutorials": ["jupyter", "ipywidgets"],
         "pointcloud": POINTCLOUD_REQUIRES,
     }
@@ -126,7 +127,7 @@ setup(
     name=package_name,
     include_package_data=True,
     version=version,
-    description="A large compression model for weather and climate data, which compresses a 200+ TB ERA5 dataset into a new 0.7TB CRA5 dataset.",
+    description="A large compression model for weather and climate data.",
     url="https://github.com/taohan10200/CRA5",
     py_modules=['cra5'],
     author="HAN Tao",
@@ -160,6 +161,6 @@ setup(
         "Programming Language :: Python :: 3.10",
         "Topic :: Scientific/Engineering :: Artificial Intelligence",
     ],
-    ext_modules=[],
+    ext_modules=get_extensions(),
     cmdclass={"build_ext": build_ext},
 )
