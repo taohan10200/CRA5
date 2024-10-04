@@ -64,8 +64,7 @@ class cra5_api():
         with torch.no_grad():
             st = time.time()
             if latent_type=='float':
-                y, _, _ =self.net.encode_latent(x)
-                print(f'encoding time:{time.time()-st}')   
+                y, _, _ =self.net.encode_latent(x) 
                 return y
             if latent_type=='quantized':
                 y, y_hat, y_likelihoods =self.net.encode_latent(x, type='quantized')
@@ -86,12 +85,13 @@ class cra5_api():
                      ):
         save_root = save_root or self.local_root
         # self.download_era5_data(time_stamp)
+        st1 = time.time()
         data = self.read_data_from_nc(time_stamp)
         data = torch.from_numpy(data).to(self.device)
         x = self.normalization(data).unsqueeze(0)
-
+        st2 = time.time()
+       
         with torch.no_grad():
-            st = time.time()
             if return_format=='latent':
                 y, _, _ =self.net.encode_latent(x, type='quantized')
                 return y
@@ -101,13 +101,9 @@ class cra5_api():
             elif return_format=='bin':  
                 output = self.net.compress(x) 
                 
-            print(f'The encoding time is {time.time()-st} s')
-        print(output["z_shape"])
-        
+        st3 = time.time()    
         year = time_stamp.split('-')[0]
-        file_url=f'{save_root}/cra5/{year}/{time_stamp}.bin'
-        print(os.path.dirname(file_url))
-    
+        file_url=f'{save_root}/{year}/{time_stamp}.bin'
         os.makedirs(os.path.dirname(file_url), exist_ok=True)    
         with Path(file_url).open("wb") as f:
             out_strings = output["strings"]
@@ -116,10 +112,18 @@ class cra5_api():
             bytes_cnt = write_uints(f, (shape[0], shape[1], len(out_strings)))
         
             for s in out_strings:
-                print(len(s))
                 bytes_cnt += write_uints(f, (len(s[0]),))
                 bytes_cnt += write_bytes(f, s[0])
-    
+                
+        st4 =  time.time()    
+        return dict(
+            output=output,
+            reading_time = st2-st1,
+            encoding_time = st3-st2,
+            saving_time = st4-st3,
+            save_path =file_url
+        )
+        
     def bin_to_latent(self,
                      bin_path = None, 
                      ):
@@ -153,7 +157,7 @@ class cra5_api():
                         ):
 
         bin_path =  custom_path or f'{self.local_root}/CRA5/{time_stamp[:4]}/{time_stamp}.bin'
-        dec_start = time.time()
+        decoding_start = time.time()
         with Path(bin_path).open("rb") as f:
             lstrings = []
             shape = read_uints(f, 2)
@@ -165,22 +169,28 @@ class cra5_api():
                 lstrings.append([s])
                 
             with torch.no_grad():    
-                print(f"Decoded in {time.time() - dec_start:.2f}s")
+                # print(f"Reading latent time: {time.time() - decoding_start:.4f}s")
                 if return_format=='latent':
                     output =  self.net.decompress(lstrings, shape, return_format='latent')
                     return output
                 else:
                     output =  self.net.decompress(lstrings, shape)
-                
+            
+            # print(f"Full decoding time: {time.time() - decoding_start:.2f}s")
+            decoding_time = time.time() - decoding_start
             if return_format =='normalized':
-                return output['x_hat']
+                return dict(
+                    x_hat=output['x_hat'],
+                    decoding_time = decoding_time,
+                )
            
             elif return_format =='de_normalized':
-                x_hat = self.de_normalization(output['x_hat'].squeeze(0))
-                print(f"Decoded in {time.time() - dec_start:.2f}s")
-                                    
-                return x_hat
-    
+                x_hat = self.de_normalization(output['x_hat'].squeeze(0))                             
+                return dict(
+                    x_hat=x_hat,
+                    decoding_time = decoding_time,
+                )
+
             
     def read_data_from_nc(self,
                             time_stamp:str, 
@@ -274,7 +284,6 @@ class cra5_api():
             data_rec = reconstruct_data[self.vname_to_channels[vname]]
             diff = np.abs(data_ori - data_rec)
             vis_data_list.append([data_ori, data_rec, diff])
-        # print(vis_data_list)
 
         fig, axs = plt.subplots(len(show_variables), 3, figsize=( 20, 3*len(show_variables)))
 
@@ -296,10 +305,10 @@ class cra5_api():
         plt.tight_layout()
 
         plt.show()
-        if save_root is not None:
-            fig_path = f'{save_path}/{time_stamp}_latent.png'
+        if save_path is not None:
+            fig_path = f'{save_path}/{time_stamp}_rconstruction.png'
         else:
-            fig_path = f'{self.local_root}/cra5_vis/{time_stamp[:4]}/{time_stamp}.png'
+            fig_path = f'{self.local_root}/CRA5_vis/{time_stamp[:4]}/{time_stamp}_reconstruction.png'
         os.makedirs(os.path.dirname(fig_path), exist_ok=True)
         if save_images:
             plt.savefig(fig_path)
@@ -324,10 +333,10 @@ class cra5_api():
         
         plt.tight_layout()
         plt.show()
-        if save_root is not None:
+        if save_path is not None:
             fig_path = f'{save_path}/{time_stamp}_latent.png'
         else:
-            fig_path = f'{self.local_root}/cra5_vis/{time_stamp[:4]}/{time_stamp}_latent.png'
+            fig_path = f'{self.local_root}/CRA5_vis/{time_stamp[:4]}/{time_stamp}_latent.png'
         os.makedirs(os.path.dirname(fig_path), exist_ok=True)
         if save_images:
             plt.savefig(fig_path)

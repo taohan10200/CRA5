@@ -96,57 +96,6 @@ def get_extensions():
 
     return ext_modules
 
-def parse_requirements(fname='requirements.txt', with_version=True):
-    """Parse the package dependencies listed in a requirements file but strips
-    specific versioning information.
-
-    Args:
-        fname (str): path to requirements file
-        with_version (bool, default=False): if True include version specs
-
-    Returns:
-        List[str]: list of requirements items
-
-    CommandLine:
-        python -c "import setup; print(setup.parse_requirements())"
-    """
-    import re
-    import sys
-    from os.path import exists
-    require_fpath = fname
-
-    def parse_line(line):
-        """Parse information from a line in a requirements text file."""
-        if line.startswith('-r '):
-            # Allow specifying requirements in other files
-            target = line.split(' ')[1]
-            for info in parse_require_file(target):
-                yield info
-        else:
-            info = {'line': line}
-            if line.startswith('-e '):
-                info['package'] = line.split('#egg=')[1]
-            elif '@git+' in line:
-                info['package'] = line
-            else:
-                # Remove versioning from the package
-                pat = '(' + '|'.join(['>=', '==', '>']) + ')'
-                parts = re.split(pat, line, maxsplit=1)
-                parts = [p.strip() for p in parts]
-
-                info['package'] = parts[0]
-                if len(parts) > 1:
-                    op, rest = parts[1:]
-                    if ';' in rest:
-                        # Handle platform specific dependencies
-                        # http://setuptools.readthedocs.io/en/latest/setuptools.html#declaring-platform-specific-dependencies
-                        version, platform_deps = map(str.strip,
-                                                     rest.split(';'))
-                        info['platform_deps'] = platform_deps
-                    else:
-                        version = rest  # NOQA
-                    info['version'] = (op, version)
-            yield info
 
 TEST_REQUIRES = ["pytest", "pytest-cov", "plotly"]
 DEV_REQUIRES = TEST_REQUIRES + [
@@ -187,7 +136,32 @@ setup(
     include_package_data=True,
     zip_safe=False,
     python_requires=">=3.8",
-    install_requires=parse_requirements('requirements.txt'),
+    install_requires=[
+        "yapf",
+        "cdsapi",
+        "einops",
+        "numpy==1.25.0",
+        "pandas",
+        "scipy",
+        "matplotlib",
+        "torchvision>=0.15.0, <0.19.0",
+        "torch>=1.7.1, <2.2.0",
+        "torch-geometric>=2.3.0",
+        "typing-extensions>=4.0.0",
+        "pytorch-msssim",
+        "tqdm",
+        "cdsapi",
+        "rich",
+        "addict==2.4.0",
+        "dict_recursive_update==1.0.1",
+        "h5py==3.9.0",
+        "packaging==24.1",
+        "Pillow==10.4.0",
+        "timm==0.9.2",
+        "xarray==2023.7.0",
+        "netcdf4",
+        "compressai",
+    ],
     extras_require=get_extra_requirements(),
     license="BSD 3-Clause Clear License",
     classifiers=[
@@ -200,6 +174,6 @@ setup(
         "Programming Language :: Python :: 3.10",
         "Topic :: Scientific/Engineering :: Artificial Intelligence",
     ],
-    ext_modules=[], #get_extensions(),
+    # ext_modules=get_extensions(),
     cmdclass={"build_ext": build_ext},
 )

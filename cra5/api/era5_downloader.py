@@ -77,7 +77,7 @@ class era5_downloader():
             exist_size = os.path.getsize(file_path)
     
         remote_size = self.cdsapi_client.retrieve(ecmwf_dataset,
-                                                    request_dic,).content_length  # 文件下载器
+                                                    request_dic,).content_length  # 
 
         if remote_size == exist_size:
             print("{} is complete, remote vs local size: {}=={}"
