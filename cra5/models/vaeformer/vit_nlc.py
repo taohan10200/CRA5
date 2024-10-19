@@ -422,7 +422,7 @@ class ViT_Encoder(nn.Module):
                 self.blocks.append(block)
 
         self.ln_pre = norm_layer(embed_dim) if pre_ln else nn.Identity()  # for clip model only
-        # self.norm = norm_layer(embed_dim*2)
+
         if self.z_dim is not None:
             self.quan_mlp = Mlp(in_features=2*embed_dim,
                                 hidden_features=2*int(np.sqrt(embed_dim//z_dim))*z_dim,
@@ -471,17 +471,13 @@ class ViT_Encoder(nn.Module):
 
                 return x  #  we here control the last 2 blocks to genertate 2*dimensions' data.
             else:
-                if self.lms_checkpoint_train:
-                    a = (x, self.Hp, self.Wp)
-                    x = checkpoint(self.blocks[i], *a)
-                else:
-                    x = self.blocks[i](x, self.Hp, self.Wp)
+                x = self.blocks[i](x, self.Hp, self.Wp)
         return x
 
     def forward(self, input_var, **kwargs):
         x = self.embedding_forward(input_var, **kwargs)
         x = self.encoder_forward(x)
-        # x = self.norm(x)
+
         if self.z_dim is not None:
             x = self.quan_mlp(x)
         B ,N ,C = x.shape
@@ -660,11 +656,7 @@ class ViT_Decoder(nn.Module):
         # x = self.ln_pre(x)  # effective for clip model only, otherwise nn.Identity
 
         for i, blk in enumerate(self.blocks):
-            if self.lms_checkpoint_train:
-                a = (x, self.Hp, self.Wp)
-                x = checkpoint(blk, *a)
-            else:
-                x = blk(x, self.Hp, self.Wp)
+            x = blk(x, self.Hp, self.Wp)
 
         if self.ending_norm:
 

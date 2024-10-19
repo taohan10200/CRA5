@@ -1,9 +1,10 @@
 from cra5.api.era5_downloader import era5_downloader
-ERA5_data = era5_downloader('./cra5/api/era5_config.py') #specify the dataset config for what we want to download
-data = ERA5_data.get_form_timestamp(time_stamp="2024-06-01T00:00:00",
-                                    local_root='./data/ERA5')
+# ERA5_data = era5_downloader('./cra5/api/era5_config.py') #specify the dataset config for what we want to download
+# data = ERA5_data.get_form_timestamp(time_stamp="2024-06-01T00:00:00",
+#                                     local_root='./data/ERA5')
 import time
 from cra5.api import cra5_api
+import numpy as np
 cra5_API = cra5_api()
 
 
@@ -40,19 +41,20 @@ for i in range(100):
 	output = cra5_API.decode_from_bin("2024-06-01T00:00:00", return_format='de_normalized') # Return the de-normalized cra5 data
 	x_hat = output['x_hat']
 	decoding_time.append(output['decoding_time'])
+	print(f'step_{i}')
 	
- # Show some channels of the latent
-	cra5_API.show_latent(
-		latent=y_hat.squeeze(0).cpu().numpy(), 
-		time_stamp="2024-06-01T00:00:00", 
-		show_channels=[0, 10, 20, 30, 40, 50, 60, 70, 80, 90, 100, 110, 120, 130, 140, 150],
-		save_path = './data/CRA5_vis')
+#  # Show some channels of the latent
+# 	cra5_API.show_latent(
+# 		latent=y_hat.squeeze(0).cpu().numpy(), 
+# 		time_stamp="2024-06-01T00:00:00", 
+# 		show_channels=[0, 10, 20, 30, 40, 50, 60, 70, 80, 90, 100, 110, 120, 130, 140, 150],
+# 		save_path = './data/CRA5_vis')
 
-	# show some variables for the constructed data
-	cra5_API.show_image(
-		reconstruct_data=x_hat.cpu().numpy(), 
-		time_stamp="2024-06-01T00:00:00", 
-		show_variables=['z_500', 'q_500', 'u_500', 'v_500', 't_500', 'w_500'],
-		save_path = './data/CRA5_vis')
+# 	# show some variables for the constructed data
+# 	cra5_API.show_image(
+# 		reconstruct_data=x_hat.cpu().numpy(), 
+# 		time_stamp="2024-06-01T00:00:00", 
+# 		show_variables=['z_500', 'q_500', 'u_500', 'v_500', 't_500', 'w_500'],
+# 		save_path = './data/CRA5_vis')
 print(f"The average encoding time is: {np.array(encoding_time).mean()}s variance: {np.array(encoding_time).std()} s")
 print(f"The average deconding time is: {np.array(decoding_time).mean()}s variance: {np.array(decoding_time).std()} s")
